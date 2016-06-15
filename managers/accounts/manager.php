@@ -8,7 +8,7 @@
  * @api
  * @package Accounts
  */
-class CApiAuthAccountsManager extends AApiManager
+class CApiBasicAuthAccountsManager extends AApiManager
 {
 	/**
 	 * @var CApiEavManager

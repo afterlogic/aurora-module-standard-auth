@@ -1,6 +1,6 @@
 <?php
 
-class AuthModule extends AApiModule
+class BasicAuthModule extends AApiModule
 {
 	public $oApiAccountsManager = null;
 	
@@ -11,7 +11,7 @@ class AuthModule extends AApiModule
 	{
 		parent::init();
 		
-		$this->oApiAccountsManager = $this->GetManager('accounts', 'db');
+		$this->oApiAccountsManager = $this->GetManager('accounts');
 		
 //		$this->subscribeEvent('Auth::Login', array($this, 'checkAuth'));
 		$this->subscribeEvent('Login', array($this, 'checkAuth'));
