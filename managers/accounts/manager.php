@@ -49,7 +49,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 				if (null === $oAccount)
 				{
 //					$oAccount = $this->oStorage->getUserById($iUserId);
-					$oAccount = $this->oEavManager->getObjectById($iAccountId);
+					$oAccount = $this->oEavManager->getEntityById($iAccountId);
 					
 					if ($oAccount instanceof \CAccount)
 					{
@@ -92,7 +92,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 		$oAccount = null;
 		try
 		{
-			$aResults = $this->oEavManager->getObjects(
+			$aResults = $this->oEavManager->getEntities(
 				'CAccount', 
 				array(
 					'IsDisabled', 'Login', 'Password', 'IdUser'
@@ -148,7 +148,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 				$aFilters['Login'] = '%'.$sSearchDesc.'%';
 			}
 				
-			$aResults = $this->oEavManager->getObjects(
+			$aResults = $this->oEavManager->getEntities(
 				'CAccount', 
 				array(
 					'IsDisabled', 'Login', 'Password', 'IdUser'
@@ -164,7 +164,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 			{
 				foreach($aResults as $oItem)
 				{
-					$aResult[$oItem->iObjectId] = array(
+					$aResult[$oItem->iId] = array(
 						$oItem->Login,
 						$oItem->Password,
 						$oItem->IdUser,
@@ -191,7 +191,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 		$bResult = false;
 		try
 		{
-			$aResults = $this->oEavManager->getObjects(
+			$aResults = $this->oEavManager->getEntities(
 				'CAccount',
 				array('Login'),
 				0,
@@ -203,7 +203,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 			{
 				foreach($aResults as $oObject)
 				{
-					if ($oObject->iObjectId !== $oAccount->iObjectId)
+					if ($oObject->iId !== $oAccount->iId)
 					{
 						$bResult = true;
 						break;
@@ -232,7 +232,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 			{
 				if (!$this->isExists($oAccount))
 				{
-					if (!$this->oEavManager->saveObject($oAccount))
+					if (!$this->oEavManager->saveEntity($oAccount))
 					{
 						throw new CApiManagerException(Errs::UsersManager_UserCreateFailed);
 					}
@@ -268,7 +268,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 			{
 //				if ($this->isExists($oAccount))
 //				{
-					if (!$this->oEavManager->saveObject($oAccount))
+					if (!$this->oEavManager->saveEntity($oAccount))
 					{
 						throw new CApiManagerException(Errs::UsersManager_UserCreateFailed);
 					}
@@ -302,7 +302,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 		$bResult = false;
 		try
 		{
-			$bResult = $this->oEavManager->deleteObject($oAccount->iObjectId);
+			$bResult = $this->oEavManager->deleteEntity($oAccount->iId);
 		}
 		catch (CApiBaseException $oException)
 		{

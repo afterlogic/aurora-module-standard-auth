@@ -325,13 +325,13 @@ class BasicAuthModule extends AApiModule
 		{
 			$oAccount = \CAccount::createInstance();
 			
-			$oAccount->IdUser = $oEventResult->iObjectId;
+			$oAccount->IdUser = $oEventResult->iId;
 			$oAccount->Login = $sLogin;
 			$oAccount->Password = $sPassword;
 
 			$this->oApiAccountsManager->createAccount($oAccount);
 			return $oAccount ? array(
-				'iObjectId' => $oAccount->iObjectId
+				'iObjectId' => $oAccount->iId
 			) : false;
 		}
 		else
@@ -357,7 +357,7 @@ class BasicAuthModule extends AApiModule
 			$this->oApiAccountsManager->createAccount($oAccount);
 			
 			return $oAccount ? array(
-				'iObjectId' => $oAccount->iObjectId
+				'iObjectId' => $oAccount->iId
 			) : false;
 		}
 		else
@@ -396,7 +396,7 @@ class BasicAuthModule extends AApiModule
 			}
 			
 			return $oAccount ? array(
-				'iObjectId' => $oAccount->iObjectId
+				'iObjectId' => $oAccount->iId
 			) : false;
 		}
 		else
