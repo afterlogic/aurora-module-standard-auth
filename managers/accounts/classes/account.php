@@ -20,15 +20,13 @@ class CAccount extends AEntity
 		
 		$this->__USE_TRIM_IN_STRINGS__ = true;
 		
-		$this->aStaticMap = array(
+		$this->setStaticMap(array(
 			'IsDisabled'	=> array('bool', false),
 			'IdUser'		=> array('int', 0),
 			'Login'			=> array('string', ''),
 			'Password'		=> array('encrypted', ''),
 			'LastModified'  => array('datetime', date('Y-m-d H:i:s'))
-		);
-		
-		$this->SetDefaults();
+		));
 
 		CApi::Plugin()->RunHook('api-account-construct', array(&$this));
 	}
