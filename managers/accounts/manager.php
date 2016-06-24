@@ -22,7 +22,7 @@ class CApiBasicAuthAccountsManager extends AApiManager
 	{
 		parent::__construct('accounts', $oManager, $oModule);
 		
-		$this->oEavManager = \CApi::GetCoreManager('eav', 'db');
+		$this->oEavManager = \CApi::GetSystemManager('eav', 'db');
 
 		$this->incClass('account');
 	}
