@@ -9,8 +9,6 @@ class BasicAuthModule extends AApiModule
 	 */
 	public function init()
 	{
-		parent::init();
-		
 		$this->oApiAccountsManager = $this->GetManager('accounts');
 		
 //		$this->subscribeEvent('Auth::Login', array($this, 'checkAuth'));
