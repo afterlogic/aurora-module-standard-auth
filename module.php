@@ -299,6 +299,20 @@ class BasicAuthModule extends AApiModule
 	}
 	
 	/**
+	 * Creates basic account for specified user. Also uses from web API.
+	 * 
+	 * @param int $UserId User identificator.
+	 * @param string $Login New account login.
+	 * @param string $Password New account password.
+	 * 
+	 * @return boolean
+	 */
+	public function CreateUserAccount($UserId, $Login, $Password)
+	{
+		return $this->CreateAccount(0, $UserId, $Login, $Password);
+	}
+	
+	/**
 	 * 
 	 * @return boolean
 	 */
@@ -404,19 +418,22 @@ class BasicAuthModule extends AApiModule
 
 		return false;
 	}
-	
+
 	/**
+	 * Deletes basic account. Also uses via web API.
 	 * 
+	 * @param int $AccountId
 	 * @return boolean
+	 * 
+	 * @throws \System\Exceptions\ClientException
 	 */
-	public function DeleteAccount($iAccountId = 0)
+	public function DeleteAccount($AccountId = 0)
 	{
 		$bResult = false;
 
-		if ($iAccountId > 0)
+		if ($AccountId > 0)
 		{
-			
-			$oAccount = $this->oApiAccountsManager->getAccountById($iAccountId);
+			$oAccount = $this->oApiAccountsManager->getAccountById($AccountId);
 			
 			if ($oAccount)
 			{
@@ -429,5 +446,29 @@ class BasicAuthModule extends AApiModule
 		{
 			throw new \System\Exceptions\ClientException(\System\Notifications::UserNotAllowed);
 		}
+	}
+	
+	/**
+	 * Obtains basic account for specified user. Also uses via web API.
+	 * 
+	 * @param int $UserId User identifier.
+	 * 
+	 * @return array|boolean
+	 */
+	public function GetUserAccounts($UserId)
+	{
+		$aAccounts = array();
+		$mResult = $this->oApiAccountsManager->getUserAccounts($UserId);
+		if (is_array($mResult))
+		{
+			foreach($mResult as $oItem)
+			{
+				$aAccounts[] = array(
+					'id' => $oItem->iId,
+					'login' => $oItem->Login
+				);
+			}
+		}
+		return $aAccounts;
 	}
 }
