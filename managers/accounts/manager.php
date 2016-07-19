@@ -309,4 +309,31 @@ class CApiBasicAuthAccountsManager extends AApiManager
 
 		return $bResult;
 	}
+	
+	/**
+	 * Obtains basic accounts for specified user.
+	 * 
+	 * @param int $iUserId
+	 * 
+	 * @return array|boolean
+	 */
+	public function getUserAccounts($iUserId)
+	{
+		$mResult = false;
+		try
+		{
+			$mResult = $this->oEavManager->getEntities(
+				'CAccount',
+				array('Login'),
+				0,
+				0,
+				array('IdUser' => $iUserId, 'IsDisabled' => false)
+			);
+		}
+		catch (CApiBaseException $oException)
+		{
+			$this->setLastException($oException);
+		}
+		return $mResult;
+	}
 }
