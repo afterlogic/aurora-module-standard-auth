@@ -15,6 +15,7 @@ class BasicAuthModule extends AApiModule
 		
 //		$this->subscribeEvent('Auth::Login', array($this, 'checkAuth'));
 		$this->subscribeEvent('Login', array($this, 'checkAuth'));
+		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
 	}
 	
 	/**
@@ -471,5 +472,23 @@ class BasicAuthModule extends AApiModule
 			}
 		}
 		return $aAccounts;
+	}
+	
+	/**
+	 * Deletes all basic accounts which are owened by the specified user.
+	 * 
+	 * @param int $iUserId User Identificator.
+	 */
+	public function onAfterDeleteUser($iUserId)
+	{
+		$mResult = $this->oApiAccountsManager->getUserAccounts($iUserId);
+		
+		if (is_array($mResult))
+		{
+			foreach($mResult as $oItem)
+			{
+				$this->DeleteAccount($oItem->iId);
+			}
+		}
 	}
 }
