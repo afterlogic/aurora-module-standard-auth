@@ -9,6 +9,8 @@ class BasicAuthModule extends AApiModule
 	 */
 	public function init()
 	{
+		$this->incClass('account');
+		
 		$this->oApiAccountsManager = $this->GetManager('accounts');
 		
 //		$this->subscribeEvent('Auth::Login', array($this, 'checkAuth'));
@@ -249,12 +251,8 @@ class BasicAuthModule extends AApiModule
 
 		if (is_array($mResult))
 		{
-//			$iTime = $bSignMe ? time() + 60 * 60 * 24 * 30 : 0;
-			$sAccountHashTable = \CApi::EncodeKeyValues($mResult);
-
-			$sAuthToken = \md5(\microtime(true).\rand(10000, 99999));
-
-			$sAuthToken = \CApi::Cacher()->Set('AUTHTOKEN:'.$sAuthToken, $sAccountHashTable) ? $sAuthToken : '';
+			$mResult['time'] = $SignMe ? time() + 60 * 60 * 24 * 30 : 0;
+			$sAuthToken = \CApi::UserSession()->Set($mResult);
 			
 			return array(
 				'AuthToken' => $sAuthToken
@@ -270,7 +268,7 @@ class BasicAuthModule extends AApiModule
 		$mAuthToken = \CApi::getLogginedUserAuthToken();
 		if ($mAuthToken !== false)
 		{
-			\CApi::Cacher()->Delete('AUTHTOKEN:'.$mAuthToken);
+			\CApi::UserSession()->Delete($mAuthToken);
 		}
 		else
 		{
