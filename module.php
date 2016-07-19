@@ -379,29 +379,32 @@ class BasicAuthModule extends AApiModule
 	}
 	
 	/**
+	 * Updates existing basic account. Also uses from web API.
 	 * 
-	 * @return boolean
+	 * @param int $AccountId Identificator of account to update.
+	 * @param string $Login New value of account login.
+	 * @param string $Password New value of account password.
+	 * 
+	 * @return array|boolean
+	 * 
+	 * @throws \System\Exceptions\ClientException
 	 */
-	public function UpdateAccount($iAccountId = 0, $sLogin = '', $sPassword = '')
+	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
 	{
-//		$oAccount = $this->getDefaultAccountFromParam();
-		
-//		if ($this->oApiCapabilityManager->isPersonalContactsSupported($oAccount))
-		
-		if ($iAccountId > 0)
+		if ($AccountId > 0)
 		{
-			$oAccount = $this->oApiAccountsManager->getAccountById($iAccountId);
+			$oAccount = $this->oApiAccountsManager->getAccountById($AccountId);
 			
 			if ($oAccount)
 			{
-				if ($sLogin) {
-					$oAccount->Login = $sLogin;
+				if ($Login)
+				{
+					$oAccount->Login = $Login;
 				}
-				if ($sPassword) {
-					$oAccount->Password = $sPassword;
+				if ($Password)
+				{
+					$oAccount->Password = $Password;
 				}
-				
-
 				$this->oApiAccountsManager->updateAccount($oAccount);
 			}
 			
