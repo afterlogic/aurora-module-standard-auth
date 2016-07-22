@@ -197,16 +197,9 @@ class CApiBasicAuthAccountsManager extends AApiManager
 				array('Login' => $oAccount->Login)
 			);
 
-			if ($aResults)
+			if (is_array($aResults) && count($aResults) > 0)
 			{
-				foreach($aResults as $oObject)
-				{
-					if ($oObject->iId !== $oAccount->iId)
-					{
-						$bResult = true;
-						break;
-					}
-				}
+				$bResult = true;
 			}
 		}
 		catch (CApiBaseException $oException)

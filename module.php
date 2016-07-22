@@ -13,8 +13,8 @@ class BasicAuthModule extends AApiModule
 		
 		$this->oApiAccountsManager = $this->GetManager('accounts');
 		
-//		$this->subscribeEvent('Auth::Login', array($this, 'checkAuth'));
 		$this->subscribeEvent('Login', array($this, 'checkAuth'));
+		$this->subscribeEvent('CheckAccountExists', array($this, 'checkAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
 	}
 	
@@ -312,15 +312,29 @@ class BasicAuthModule extends AApiModule
 	}
 	
 	/**
+	 * Checks if module has account with specified login.
+	 * 
+	 * @param string $sLogin Login for checking.
+	 * 
+	 * @throws \System\Exceptions\ClientException
+	 */
+	public function checkAccountExists($sLogin)
+	{
+		$oAccount = \CAccount::createInstance();
+		$oAccount->Login = $sLogin;
+		if ($this->oApiAccountsManager->isExists($oAccount))
+		{
+			throw new \System\Exceptions\ClientException(\System\Notifications::AccountExists);
+		}
+	}
+			
+	/**
 	 * 
 	 * @return boolean
 	 */
 	public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
 	{
-//		$oAccount = $this->getDefaultAccountFromParam();
-
-//		$oApiIntegrator = \CApi::GetCoreManager('integrator');
-//		$iUserId = $oApiIntegrator->getLogginedUserId($this->getParamValue('AuthToken'));
+		$this->broadcastEvent('CheckAccountExists', array($sLogin));
 		
 		$oEventResult = null;
 		$this->broadcastEvent('CreateAccount', array(
@@ -340,6 +354,11 @@ class BasicAuthModule extends AApiModule
 			$oAccount->Login = $sLogin;
 			$oAccount->Password = $sPassword;
 
+			if ($this->oApiAccountsManager->isExists($oAccount))
+			{
+				throw new \System\Exceptions\ClientException(\System\Notifications::AccountExists);
+			}
+			
 			$this->oApiAccountsManager->createAccount($oAccount);
 			return $oAccount ? array(
 				'iObjectId' => $oAccount->iId
