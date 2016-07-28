@@ -339,8 +339,8 @@ class BasicAuthModule extends AApiModule
 		$oEventResult = null;
 		$this->broadcastEvent('CreateAccount', array(
 			array(
-				'IdTenant' => $iTenantId,
-				'IdUser' => $iUserId,
+				'TenantId' => $iTenantId,
+				'UserId' => $iUserId,
 				'login' => $sLogin,
 				'password' => $sPassword
 			),
