@@ -12,6 +12,7 @@ class BasicAuthModule extends AApiModule
 		$this->incClass('account');
 		
 		$this->oApiAccountsManager = $this->GetManager('accounts');
+		$this->setNonAuthorizedMethods(array('Login'));
 		
 		$this->subscribeEvent('Login', array($this, 'checkAuth'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'checkAccountExists'));
