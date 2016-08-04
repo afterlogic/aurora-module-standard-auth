@@ -17,6 +17,20 @@ class BasicAuthModule extends AApiModule
 		$this->subscribeEvent('Login', array($this, 'checkAuth'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'checkAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
+		$this->subscribeEvent('GetUserAuthAccountLogin', array($this, 'onGetUserAuthAccountLogin'));
+	}
+	
+    public function onGetUserAuthAccountLogin(&$aLoginList)
+	{
+		$iUserId = \CApi::getLogginedUserId();
+		$mResult = $this->oApiAccountsManager->getUserAccounts($iUserId);
+		if (is_array($mResult))
+		{
+			foreach($mResult as $oItem)
+			{
+				$aLoginList[] = $oItem->Login;
+			}
+		}
 	}
 	
 	/**
