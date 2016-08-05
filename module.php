@@ -225,33 +225,6 @@ class BasicAuthModule extends AApiModule
 		throw new \System\Exceptions\ClientException(\System\Notifications::AuthError);
 	}*/
 	
-	/**
-	 * @return array
-	 */
-	/*public function Logout()
-	{
-		setcookie('aft-cache-ctrl', '', time() - 3600);
-		$sAuthToken = (string) $this->getParamValue('AuthToken', '');
-		$oAccount = $this->getDefaultAccountFromParam(false);
-
-		$oApiIntegrator = \CApi::GetCoreManager('integrator');
-
-		if ($oAccount && $oAccount->User && 0 < $oAccount->User->IdHelpdeskUser &&
-			$this->oApiCapabilityManager->isHelpdeskSupported($oAccount)) {
-			
-			$oApiIntegrator->logoutHelpdeskUser();
-		}
-
-		$sLastErrorCode = $this->getParamValue('LastErrorCode');
-		if (0 < strlen($sLastErrorCode) && $oApiIntegrator && 0 < (int) $sLastErrorCode)
-		{
-			$oApiIntegrator->setLastErrorCode((int) $sLastErrorCode);
-		}
-
-		\CApi::LogEvent(\EEvents::Logout, $oAccount);
-		return $oApiIntegrator->logoutAccount($sAuthToken);
-	}*/
-	
 	public function Login($Login, $Password, $SignMe = 0)
 	{
 		$mResult = false;
@@ -277,21 +250,6 @@ class BasicAuthModule extends AApiModule
 		
 //		\CApi::LogEvent(\EEvents::LoginFailed, $oAccount);
 		throw new \System\Exceptions\ClientException(\System\Notifications::AuthError);
-	}
-	
-	public function Logout()
-	{	
-		$mAuthToken = \CApi::getLogginedUserAuthToken();
-		if ($mAuthToken !== false)
-		{
-			\CApi::UserSession()->Delete($mAuthToken);
-		}
-		else
-		{
-			throw new \System\Exceptions\ClientException(\Auth\Notifications::IncorrentAuthToken);
-		}
-
-		return true;
 	}
 	
 	public function checkAuth($aParams, &$mResult)
