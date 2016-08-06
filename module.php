@@ -17,20 +17,23 @@ class BasicAuthModule extends AApiModule
 		$this->subscribeEvent('Login', array($this, 'checkAuth'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'checkAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
-		$this->subscribeEvent('GetUserAuthAccountLogin', array($this, 'onGetUserAuthAccountLogin'));
 	}
 	
-    public function onGetUserAuthAccountLogin(&$aLoginList)
+	/**
+	 * Returns login of authenticated user basic account.
+	 * 
+	 * @return string|false
+	 */
+    public function GetUserAccountLogin()
 	{
 		$iUserId = \CApi::getAuthenticatedUserId();
-		$mResult = $this->oApiAccountsManager->getUserAccounts($iUserId);
-		if (is_array($mResult))
+		$aAccounts = $this->oApiAccountsManager->getUserAccounts($iUserId);
+		if (is_array($aAccounts) && count($aAccounts) > 0)
 		{
-			foreach($mResult as $oItem)
-			{
-				$aLoginList[] = $oItem->Login;
-			}
+			return $aAccounts[0]->Login;
 		}
+		
+		return false;
 	}
 	
 	/**
@@ -282,6 +285,20 @@ class BasicAuthModule extends AApiModule
 	public function CreateUserAccount($UserId, $Login, $Password)
 	{
 		return $this->CreateAccount(0, $UserId, $Login, $Password);
+	}
+	
+	/**
+	 * Creates basic account for authenticated user. Also uses from web API.
+	 * 
+	 * @param string $Login New account login.
+	 * @param string $Password New account password.
+	 * 
+	 * @return boolean
+	 */
+	public function CreateAuthenticatedUserAccount($Login, $Password)
+	{
+		$iUserId = \CApi::getAuthenticatedUserId();
+		return $this->CreateAccount(0, $iUserId, $Login, $Password);
 	}
 	
 	/**
