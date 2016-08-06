@@ -22,7 +22,7 @@ class BasicAuthModule extends AApiModule
 	
     public function onGetUserAuthAccountLogin(&$aLoginList)
 	{
-		$iUserId = \CApi::getLogginedUserId();
+		$iUserId = \CApi::getAuthenticatedUserId();
 		$mResult = $this->oApiAccountsManager->getUserAccounts($iUserId);
 		if (is_array($mResult))
 		{
@@ -36,7 +36,7 @@ class BasicAuthModule extends AApiModule
 	/**
 	 * Obtains settings of the Simple Chat Module.
 	 * 
-	 * @param \CUser $oUser Object of the loggined user.
+	 * @param \CUser $oUser Object of the authenticated user.
 	 * @return array
 	 */
 	public function GetAppData($oUser = null)
