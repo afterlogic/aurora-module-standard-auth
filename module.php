@@ -39,10 +39,9 @@ class BasicAuthModule extends AApiModule
 	/**
 	 * Obtains settings of the Simple Chat Module.
 	 * 
-	 * @param \CUser $oUser Object of the authenticated user.
 	 * @return array
 	 */
-	public function GetAppData($oUser = null)
+	public function GetAppData()
 	{
 		return array(
 			'AllowChangeLanguage' => false, //AppData.App.AllowLanguageOnLogin
