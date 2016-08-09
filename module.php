@@ -1,6 +1,6 @@
 <?php
 
-class BasicAuthModule extends AApiModule
+class StandardAuthModule extends AApiModule
 {
 	public $oApiAccountsManager = null;
 	
