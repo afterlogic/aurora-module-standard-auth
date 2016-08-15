@@ -15,6 +15,7 @@ class StandardAuthModule extends AApiModule
 		$this->setNonAuthorizedMethods(array('Login'));
 		
 		$this->subscribeEvent('Login', array($this, 'checkAuth'));
+		$this->subscribeEvent('Register', array($this, 'onRegister'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'checkAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
 	}
@@ -500,5 +501,13 @@ class StandardAuthModule extends AApiModule
 				$this->DeleteAccount($oItem->iId);
 			}
 		}
+	}
+	
+	public function onRegister($aParams, &$mResult)
+	{
+		$sLogin = $aParams['Login'];
+		$sPassword = $aParams['Password'];
+		$iUserId = $aParams['UserId'];
+		$mResult = $this->CreateUserAccount($iUserId, $sLogin, $sPassword);
 	}
 }
