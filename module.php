@@ -134,7 +134,7 @@ class StandardAuthModule extends AApiModule
 				\ELoginFormType::Both === (int) \CApi::GetSettingsConf('WebMail/LoginFormType')) && 
 				0 === strlen($sAtDomain) && 0 < strlen($sEmail) && !\MailSo\Base\Validator::EmailString($sEmail))
 		{
-			throw new \System\Exceptions\ClientException(\System\Notifications::AuthError);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AuthError);
 		}
 
 		if (\ELoginFormType::Login === (int) \CApi::GetSettingsConf('WebMail/LoginFormType') && 0 < strlen($sAtDomain))
@@ -145,7 +145,7 @@ class StandardAuthModule extends AApiModule
 
 		if (0 === strlen($sIncPassword) || 0 === strlen($sEmail.$sIncLogin)) {
 			
-			throw new \System\Exceptions\ClientException(\System\Notifications::InvalidInputParameter);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::InvalidInputParameter);
 		}
 
 		try
@@ -199,7 +199,7 @@ class StandardAuthModule extends AApiModule
 			}
 
 			\CApi::LogEvent(\EEvents::LoginFailed, $sEmail);
-			throw new \System\Exceptions\ClientException($iErrorCode, $oException,
+			throw new \System\Exceptions\AuroraApiException($iErrorCode, $oException,
 				$oException instanceof \CApiBaseException ? $oException->GetPreviousMessage() :
 				($oException ? $oException->getMessage() : ''));
 		}
@@ -225,7 +225,7 @@ class StandardAuthModule extends AApiModule
 		}
 
 		\CApi::LogEvent(\EEvents::LoginFailed, $oAccount);
-		throw new \System\Exceptions\ClientException(\System\Notifications::AuthError);
+		throw new \System\Exceptions\AuroraApiException(\System\Notifications::AuthError);
 	}*/
 	
 	public function Login($Login, $Password, $SignMe = 0)
@@ -252,7 +252,7 @@ class StandardAuthModule extends AApiModule
 		}
 		
 //		\CApi::LogEvent(\EEvents::LoginFailed, $oAccount);
-		throw new \System\Exceptions\ClientException(\System\Notifications::AuthError);
+		throw new \System\Exceptions\AuroraApiException(\System\Notifications::AuthError);
 	}
 	
 	public function checkAuth($aParams, &$mResult)
@@ -306,7 +306,7 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @param string $sLogin Login for checking.
 	 * 
-	 * @throws \System\Exceptions\ClientException
+	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function checkAccountExists($sLogin)
 	{
@@ -314,7 +314,7 @@ class StandardAuthModule extends AApiModule
 		$oAccount->Login = $sLogin;
 		if ($this->oApiAccountsManager->isExists($oAccount))
 		{
-			throw new \System\Exceptions\ClientException(\System\Notifications::AccountExists);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccountExists);
 		}
 	}
 			
@@ -348,7 +348,7 @@ class StandardAuthModule extends AApiModule
 
 			if ($this->oApiAccountsManager->isExists($oAccount))
 			{
-				throw new \System\Exceptions\ClientException(\System\Notifications::AccountExists);
+				throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccountExists);
 			}
 			
 			$this->oApiAccountsManager->createAccount($oAccount);
@@ -358,7 +358,7 @@ class StandardAuthModule extends AApiModule
 		}
 		else
 		{
-			throw new \System\Exceptions\ClientException(\System\Notifications::NonUserPassed);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::NonUserPassed);
 		}
 
 		return false;
@@ -384,7 +384,7 @@ class StandardAuthModule extends AApiModule
 		}
 		else
 		{
-			throw new \System\Exceptions\ClientException(\System\Notifications::UserNotAllowed);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::UserNotAllowed);
 		}
 
 		return false;
@@ -399,7 +399,7 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @return array|boolean
 	 * 
-	 * @throws \System\Exceptions\ClientException
+	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
 	{
@@ -426,7 +426,7 @@ class StandardAuthModule extends AApiModule
 		}
 		else
 		{
-			throw new \System\Exceptions\ClientException(\System\Notifications::UserNotAllowed);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::UserNotAllowed);
 		}
 
 		return false;
@@ -438,7 +438,7 @@ class StandardAuthModule extends AApiModule
 	 * @param int $AccountId
 	 * @return boolean
 	 * 
-	 * @throws \System\Exceptions\ClientException
+	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function DeleteAccount($AccountId = 0)
 	{
@@ -457,7 +457,7 @@ class StandardAuthModule extends AApiModule
 		}
 		else
 		{
-			throw new \System\Exceptions\ClientException(\System\Notifications::UserNotAllowed);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::UserNotAllowed);
 		}
 	}
 	
