@@ -27,6 +27,8 @@ class StandardAuthModule extends AApiModule
 	 */
     public function GetUserAccountLogin()
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		
 		$iUserId = \CApi::getAuthenticatedUserId();
 		$aAccounts = $this->oApiAccountsManager->getUserAccounts($iUserId);
 		if (is_array($aAccounts) && count($aAccounts) > 0)
@@ -44,6 +46,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function GetAppData()
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		
 		return array(
 			'AllowChangeLanguage' => false, //AppData.App.AllowLanguageOnLogin
 			'AllowRegistration' => false, //AppData.App.AllowRegistration
@@ -230,6 +234,8 @@ class StandardAuthModule extends AApiModule
 	
 	public function Login($Login, $Password, $SignMe = 0)
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		
 		$mResult = false;
 
 		$this->broadcastEvent('Login', array(
@@ -284,6 +290,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function CreateUserAccount($UserId, $Login, $Password)
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		
 		return $this->CreateAccount(0, $UserId, $Login, $Password);
 	}
 	
@@ -297,6 +305,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function CreateAuthenticatedUserAccount($Login, $Password)
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		
 		$iUserId = \CApi::getAuthenticatedUserId();
 		return $this->CreateAccount(0, $iUserId, $Login, $Password);
 	}
@@ -324,6 +334,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		
 		$this->broadcastEvent('CheckAccountExists', array($sLogin));
 		
 		$oEventResult = null;
@@ -370,6 +382,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function SaveAccount($oAccount)
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		
 //		$oAccount = $this->getDefaultAccountFromParam();
 		
 //		if ($this->oApiCapabilityManager->isPersonalContactsSupported($oAccount))
@@ -403,6 +417,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		
 		if ($AccountId > 0)
 		{
 			$oAccount = $this->oApiAccountsManager->getAccountById($AccountId);
@@ -442,6 +458,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function DeleteAccount($AccountId = 0)
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		
 		$bResult = false;
 
 		if ($AccountId > 0)
@@ -470,6 +488,8 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function GetUserAccounts($UserId)
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		
 		$aAccounts = array();
 		$mResult = $this->oApiAccountsManager->getUserAccounts($UserId);
 		if (is_array($mResult))
