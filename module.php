@@ -39,7 +39,7 @@ class StandardAuthModule extends AApiModule
 	}
 	
 	/**
-	 * Obtains settings of the Simple Chat Module.
+	 * Obtaines list of module settings for authenticated user.
 	 * 
 	 * @return array
 	 */
