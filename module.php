@@ -20,25 +20,6 @@ class StandardAuthModule extends AApiModule
 	}
 	
 	/**
-	 * Returns login of authenticated user basic account.
-	 * 
-	 * @return string|false
-	 */
-    public function GetUserAccountLogin()
-	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
-		
-		$iUserId = \CApi::getAuthenticatedUserId();
-		$aAccounts = $this->oApiAccountsManager->getUserAccounts($iUserId);
-		if (is_array($aAccounts) && count($aAccounts) > 0)
-		{
-			return $aAccounts[0]->Login;
-		}
-		
-		return false;
-	}
-	
-	/**
 	 * Obtaines list of module settings for authenticated user.
 	 * 
 	 * @return array
