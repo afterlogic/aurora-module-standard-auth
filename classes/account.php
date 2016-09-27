@@ -27,8 +27,6 @@ class CAccount extends AEntity
 			'Password'		=> array('encrypted', ''),
 			'LastModified'  => array('datetime', date('Y-m-d H:i:s'))
 		));
-
-		CApi::Plugin()->RunHook('api-account-construct', array(&$this));
 	}
 	
 	/**

@@ -41,7 +41,6 @@ class CApiStandardAuthAccountsManager extends AApiManager
 			if (is_numeric($iAccountId))
 			{
 				$iAccountId = (int) $iAccountId;
-				CApi::Plugin()->RunHook('api-get-account-by-id-precall', array(&$iAccountId, &$oAccount));
 				if (null === $oAccount)
 				{
 //					$oAccount = $this->oStorage->getUserById($iUserId);
@@ -58,7 +57,6 @@ class CApiStandardAuthAccountsManager extends AApiManager
 //						));
 					}
 				}
-				CApi::Plugin()->RunHook('api-change-account-by-id', array(&$oAccount));
 			}
 			else
 			{
