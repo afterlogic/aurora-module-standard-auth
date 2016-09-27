@@ -4,8 +4,8 @@
 
 /**
  *
- * @package Users
- * @subpackage Classes
+ * @package Classes
+ * @subpackage Users
  */
 class CAccount extends AEntity
 {
