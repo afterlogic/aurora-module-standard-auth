@@ -386,6 +386,12 @@ class StandardAuthModule extends AApiModule
 	{
 		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
 		
+		$oUser = \CApi::getAuthenticatedUser();
+		if ($oUser->Role === \EUserRole::NormalUser && $oUser->iId != $UserId)
+		{
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccessDenied);
+		}
+		
 		$aAccounts = array();
 		$mResult = $this->oApiAccountsManager->getUserAccounts($UserId);
 		if (is_array($mResult))
