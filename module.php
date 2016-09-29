@@ -208,14 +208,14 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ Login
 	 * @apiName Login
-	 * @apiGroup StandardAuth
+	 * @apiGroup Standard Auth
 	 * @apiDescription Broadcasts event Login to other modules, gets responses from them and returns AuthToken.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=Login} Method Method name.
 	 * @apiParam {string} Login Account login.
 	 * @apiParam {string} Password Account passwors.
-	 * @apiParam {boolean} SignMe Indicates if it is necessary to remember user between sessions.
+	 * @apiParam {boolean} [SignMe] Indicates if it is necessary to remember user between sessions.
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
@@ -281,14 +281,13 @@ class StandardAuthModule extends AApiModule
 			);
 		}
 		
-//		\CApi::LogEvent(\EEvents::LoginFailed, $oAccount);
 		throw new \System\Exceptions\AuroraApiException(\System\Notifications::AuthError);
 	}
 	
 	/**
 	 * @api {post} ?/Api/ CreateUserAccount
 	 * @apiName CreateUserAccount
-	 * @apiGroup StandardAuth
+	 * @apiGroup Standard Auth
 	 * @apiDescription Creates basic account for specified user.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -346,7 +345,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ CreateAuthenticatedUserAccount
 	 * @apiName CreateAuthenticatedUserAccount
-	 * @apiGroup StandardAuth
+	 * @apiGroup Standard Auth
 	 * @apiDescription Creates basic account for authenticated user.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -402,15 +401,15 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ UpdateAccount
 	 * @apiName UpdateAccount
-	 * @apiGroup StandardAuth
+	 * @apiGroup Standard Auth
 	 * @apiDescription Updates existing basic account.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=UpdateAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {int} AccountId Identificator of account to update.
-	 * @apiParam {string} Login New value of account login.
-	 * @apiParam {string} Password New value of account password.
+	 * @apiParam {string} [Login] New value of account login.
+	 * @apiParam {string} [Password] New value of account password.
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
@@ -490,7 +489,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ DeleteAccount
 	 * @apiName DeleteAccount
-	 * @apiGroup StandardAuth
+	 * @apiGroup Standard Auth
 	 * @apiDescription Deletes basic account.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -559,7 +558,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ GetUserAccounts
 	 * @apiName GetUserAccounts
-	 * @apiGroup StandardAuth
+	 * @apiGroup Standard Auth
 	 * @apiDescription Obtains basic account for specified user.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
