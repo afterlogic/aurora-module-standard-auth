@@ -206,32 +206,44 @@ class StandardAuthModule extends AApiModule
 	
 	/***** public functions might be called with web API *****/
 	/**
-	 * Obtaines list of module settings for authenticated user.
+	 * @api {post} ?/Api/ Login
+	 * @apiName Login
+	 * @apiGroup StandardAuth
+	 * @apiDescription Broadcasts event Login to other modules, gets responses from them and returns AuthToken.
 	 * 
-	 * @return array
+	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
+	 * @apiParam {string=Login} Method=Login Method name.
+	 * @apiParam {string} Login Account login.
+	 * @apiParam {string} Password Account passwors.
+	 * @apiParam {boolean} SignMe Indicates if it is necessary to remember user between sessions.
+	 * 
+	 * @apiParamExample {json} Request-Example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'Login'
+	 * }
+	 * 
+	 * @apiSuccess {string} Module Module name.
+	 * @apiSuccess {string} Method Method name.
+	 * @apiSuccess {array|bool} Result
+	 * @apiSuccess {string} Result.AuthToken Auth token.
+	 * @apiSuccess {int} [ErrorCode] Error code
+	 * 
+	 * @apiSuccessExample {json} Success response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'Login',
+	 *	Result: {AuthToken: 'token_value'}
+	 * }
+	 * 
+	 * @apiSuccessExample {json} Error response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'Login',
+	 *	Result: false,
+	 *	ErrorCode: 102
+	 * }
 	 */
-	public function GetAppData()
-	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
-		
-		return array(
-			'AllowChangeLanguage' => false, //AppData.App.AllowLanguageOnLogin
-			'AllowRegistration' => false, //AppData.App.AllowRegistration
-			'AllowResetPassword' => false, //AppData.App.AllowPasswordReset
-			'CustomLoginUrl' => '', //AppData.App.CustomLoginUrl
-			'CustomLogoUrl' => '', //AppData.LoginStyleImage
-			'DemoLogin' => '', //AppData.App.DemoWebMailLogin
-			'DemoPassword' => '', //AppData.App.DemoWebMailPassword
-			'InfoText' => '', //AppData.App.LoginDescription
-			'LoginAtDomain' => '', //AppData.App.LoginAtDomainValue
-			'LoginFormType' => 0, //AppData.App.LoginFormType 0 - email, 3 - login, 4 - both
-			'LoginSignMeType' => 0, //AppData.App.LoginSignMeType 0 - off, 1 - on, 2 - don't use
-			'RegistrationDomains' => array(), //AppData.App.RegistrationDomains
-			'RegistrationQuestions' => array(), //AppData.App.RegistrationQuestions
-			'UseFlagsLanguagesView' => false, //AppData.App.FlagsLangSelect
-		);
-	}
-	
 	/**
 	 * Broadcasts event Login to other modules, gets responses from them and returns AuthToken.
 	 * 
@@ -271,6 +283,49 @@ class StandardAuthModule extends AApiModule
 	}
 	
 	/**
+	 * @api {post} ?/Api/ CreateUserAccount
+	 * @apiName CreateUserAccount
+	 * @apiGroup StandardAuth
+	 * @apiDescription Creates basic account for specified user.
+	 * 
+	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
+	 * @apiParam {string=CreateUserAccount} Method=CreateUserAccount Method name.
+	 * @apiParam {string} AuthToken Auth token.
+	 * @apiParam {int} UserId User identificator.
+	 * @apiParam {string} Login New account login.
+	 * @apiParam {string} Password New account password.
+	 * 
+	 * @apiParamExample {json} Request-Example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateUserAccount',
+	 *	AuthToken: 'token_value',
+	 *	UserId: 123,
+	 *	Login: 'account_login',
+	 *	Password: 'account_password',
+	 * }
+	 * 
+	 * @apiSuccess {string} Module Module name.
+	 * @apiSuccess {string} Method Method name.
+	 * @apiSuccess {bool} Indicates if account was created successfully.
+	 * @apiSuccess {int} [ErrorCode] Error code
+	 * 
+	 * @apiSuccessExample {json} Success response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateUserAccount',
+	 *	Result: true
+	 * }
+	 * 
+	 * @apiSuccessExample {json} Error response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateUserAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
+	 * }
+	 */
+	/**
 	 * Creates basic account for specified user.
 	 * 
 	 * @param int $UserId User identificator.
@@ -285,6 +340,47 @@ class StandardAuthModule extends AApiModule
 		return $this->CreateAccount(0, $UserId, $Login, $Password);
 	}
 	
+	/**
+	 * @api {post} ?/Api/ CreateAuthenticatedUserAccount
+	 * @apiName CreateAuthenticatedUserAccount
+	 * @apiGroup StandardAuth
+	 * @apiDescription Creates basic account for authenticated user.
+	 * 
+	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
+	 * @apiParam {string=CreateAuthenticatedUserAccount} Method=CreateAuthenticatedUserAccount Method name.
+	 * @apiParam {string} AuthToken Auth token.
+	 * @apiParam {string} Login New account login.
+	 * @apiParam {string} Password New account password.
+	 * 
+	 * @apiParamExample {json} Request-Example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateAuthenticatedUserAccount',
+	 *	AuthToken: 'token_value',
+	 *	Login: 'account_login',
+	 *	Password: 'account_password',
+	 * }
+	 * 
+	 * @apiSuccess {string} Module Module name.
+	 * @apiSuccess {string} Method Method name.
+	 * @apiSuccess {bool} Indicates if account was created successfully.
+	 * @apiSuccess {int} [ErrorCode] Error code
+	 * 
+	 * @apiSuccessExample {json} Success response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateAuthenticatedUserAccount',
+	 *	Result: true
+	 * }
+	 * 
+	 * @apiSuccessExample {json} Error response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateAuthenticatedUserAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
+	 * }
+	 */
 	/**
 	 * Creates basic account for authenticated user.
 	 * 
@@ -301,7 +397,51 @@ class StandardAuthModule extends AApiModule
 	}
 	
 	/**
-	 * Updates existing basic account. Also uses from web API.
+	 * @api {post} ?/Api/ UpdateAccount
+	 * @apiName UpdateAccount
+	 * @apiGroup StandardAuth
+	 * @apiDescription Updates existing basic account.
+	 * 
+	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
+	 * @apiParam {string=UpdateAccount} Method=UpdateAccount Method name.
+	 * @apiParam {string} AuthToken Auth token.
+	 * @apiParam {int} AccountId Identificator of account to update.
+	 * @apiParam {string} Login New value of account login.
+	 * @apiParam {string} Password New value of account password.
+	 * 
+	 * @apiParamExample {json} Request-Example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'UpdateAccount',
+	 *	AuthToken: 'token_value',
+	 *	AccountId: 123,
+	 *	Login: 'account_login',
+	 *	Password: 'account_password',
+	 * }
+	 * 
+	 * @apiSuccess {string} Module Module name.
+	 * @apiSuccess {string} Method Method name.
+	 * @apiSuccess {array|bool} Result
+	 * @apiSuccess {string} Result.iObjectId Identificator of updated account.
+	 * @apiSuccess {int} [ErrorCode] Error code
+	 * 
+	 * @apiSuccessExample {json} Success response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'UpdateAccount',
+	 *	Result: true
+	 * }
+	 * 
+	 * @apiSuccessExample {json} Error response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'UpdateAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
+	 * }
+	 */
+	/**
+	 * Updates existing basic account.
 	 * 
 	 * @param int $AccountId Identificator of account to update.
 	 * @param string $Login New value of account login.
@@ -345,11 +485,49 @@ class StandardAuthModule extends AApiModule
 	}
 	
 	/**
+	 * @api {post} ?/Api/ DeleteAccount
+	 * @apiName DeleteAccount
+	 * @apiGroup StandardAuth
+	 * @apiDescription Deletes basic account.
+	 * 
+	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
+	 * @apiParam {string=DeleteAccount} Method=DeleteAccount Method name.
+	 * @apiParam {string} AuthToken Auth token.
+	 * @apiParam {int} AccountId Identificator of account to delete.
+	 * 
+	 * @apiParamExample {json} Request-Example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'UpdateAccount',
+	 *	AuthToken: 'token_value',
+	 *	AccountId: 123
+	 * }
+	 * 
+	 * @apiSuccess {string} Module Module name.
+	 * @apiSuccess {string} Method Method name.
+	 * @apiSuccess {bool} Indicates if account was deleted successfully.
+	 * @apiSuccess {int} [ErrorCode] Error code
+	 * 
+	 * @apiSuccessExample {json} Success response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'DeleteAccount',
+	 *	Result: true
+	 * }
+	 * 
+	 * @apiSuccessExample {json} Error response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'DeleteAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
+	 * }
+	 */
+	/**
 	 * Deletes basic account.
 	 * 
-	 * @param int $AccountId
-	 * @return boolean
-	 * 
+	 * @param int $AccountId Identificator of account to delete.
+	 * @return bool
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function DeleteAccount($AccountId = 0)
@@ -375,6 +553,45 @@ class StandardAuthModule extends AApiModule
 		}
 	}
 	
+	/**
+	 * @api {post} ?/Api/ GetUserAccounts
+	 * @apiName GetUserAccounts
+	 * @apiGroup StandardAuth
+	 * @apiDescription Obtains basic account for specified user.
+	 * 
+	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
+	 * @apiParam {string=GetUserAccounts} Method=GetUserAccounts Method name.
+	 * @apiParam {string} AuthToken Auth token.
+	 * @apiParam {int} UserId User identifier.
+	 * 
+	 * @apiParamExample {json} Request-Example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'GetUserAccounts',
+	 *	AuthToken: 'token_value',
+	 *	UserId: 123
+	 * }
+	 * 
+	 * @apiSuccess {string} Module Module name.
+	 * @apiSuccess {string} Method Method name.
+	 * @apiSuccess {array|bool} List of account objects in case of success. Account object is like {id: 234, login: 'account_login'}
+	 * @apiSuccess {int} [ErrorCode] Error code
+	 * 
+	 * @apiSuccessExample {json} Success response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'GetUserAccounts',
+	 *	Result: [{id: 234, login: 'account_login234'}, {id: 235, login: 'account_login235'}]
+	 * }
+	 * 
+	 * @apiSuccessExample {json} Error response example:
+	 * {
+	 *	Module: 'StandardAuth',
+	 *	Method: 'GetUserAccounts',
+	 *	Result: false,
+	 *	ErrorCode: 102
+	 * }
+	 */
 	/**
 	 * Obtains basic account for specified user.
 	 * 
