@@ -125,7 +125,7 @@ class StandardAuthModule extends AApiModule
 	 * @param int $iUserId User identificator.
 	 * @param string $sLogin New account login.
 	 * @param string $sPassword New account password.
-	 * @return boolean|array
+	 * @return bool|array
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
@@ -176,7 +176,7 @@ class StandardAuthModule extends AApiModule
 	 * Updates account.
 	 * 
 	 * @param \CAccount $oAccount
-	 * @return boolean
+	 * @return bool
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function SaveAccount($oAccount)
@@ -215,7 +215,7 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string=Login} Method Method name.
 	 * @apiParam {string} Login Account login.
 	 * @apiParam {string} Password Account passwors.
-	 * @apiParam {boolean} [SignMe] Indicates if it is necessary to remember user between sessions.
+	 * @apiParam {bool} [SignMe] Indicates if it is necessary to remember user between sessions.
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
@@ -252,7 +252,7 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @param string $Login Account login.
 	 * @param string $Password Account passwors.
-	 * @param boolean $SignMe Indicates if it is necessary to remember user between sessions.
+	 * @param bool $SignMe Indicates if it is necessary to remember user between sessions.
 	 * @return array
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
@@ -333,7 +333,7 @@ class StandardAuthModule extends AApiModule
 	 * @param int $UserId User identificator.
 	 * @param string $Login New account login.
 	 * @param string $Password New account password.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function CreateUserAccount($UserId, $Login, $Password)
 	{
@@ -388,7 +388,7 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @param string $Login New account login.
 	 * @param string $Password New account password.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function CreateAuthenticatedUserAccount($Login, $Password)
 	{
@@ -449,7 +449,7 @@ class StandardAuthModule extends AApiModule
 	 * @param string $Login New value of account login.
 	 * @param string $Password New value of account password.
 	 * 
-	 * @return array|boolean
+	 * @return array|bool
 	 * 
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
@@ -599,7 +599,7 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @param int $UserId User identifier.
 	 * 
-	 * @return array|boolean
+	 * @return array|bool
 	 */
 	public function GetUserAccounts($UserId)
 	{
