@@ -211,8 +211,8 @@ class StandardAuthModule extends AApiModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Broadcasts event Login to other modules, gets responses from them and returns AuthToken.
 	 * 
-	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
-	 * @apiParam {string=Login} Method=Login Method name.
+	 * @apiParam {string=StandardAuth} Module Module name.
+	 * @apiParam {string=Login} Method Method name.
 	 * @apiParam {string} Login Account login.
 	 * @apiParam {string} Password Account passwors.
 	 * @apiParam {boolean} SignMe Indicates if it is necessary to remember user between sessions.
@@ -220,14 +220,17 @@ class StandardAuthModule extends AApiModule
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
-	 *	Method: 'Login'
+	 *	Method: 'Login',
+	 *  Login: 'account_login',
+	 *  Password: 'account_password',
+	 *  SignMe: false
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {array|bool} Result
+	 * @apiSuccess {mixed} Result Object in case of success, otherwise - false.
 	 * @apiSuccess {string} Result.AuthToken Auth token.
-	 * @apiSuccess {int} [ErrorCode] Error code
+	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
@@ -288,8 +291,8 @@ class StandardAuthModule extends AApiModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Creates basic account for specified user.
 	 * 
-	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
-	 * @apiParam {string=CreateUserAccount} Method=CreateUserAccount Method name.
+	 * @apiParam {string=StandardAuth} Module Module name.
+	 * @apiParam {string=CreateUserAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {int} UserId User identificator.
 	 * @apiParam {string} Login New account login.
@@ -302,13 +305,13 @@ class StandardAuthModule extends AApiModule
 	 *	AuthToken: 'token_value',
 	 *	UserId: 123,
 	 *	Login: 'account_login',
-	 *	Password: 'account_password',
+	 *	Password: 'account_password'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {bool} Indicates if account was created successfully.
-	 * @apiSuccess {int} [ErrorCode] Error code
+	 * @apiSuccess {bool} Result Indicates if account was created successfully.
+	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
@@ -346,8 +349,8 @@ class StandardAuthModule extends AApiModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Creates basic account for authenticated user.
 	 * 
-	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
-	 * @apiParam {string=CreateAuthenticatedUserAccount} Method=CreateAuthenticatedUserAccount Method name.
+	 * @apiParam {string=StandardAuth} Module Module name.
+	 * @apiParam {string=CreateAuthenticatedUserAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Login New account login.
 	 * @apiParam {string} Password New account password.
@@ -363,7 +366,7 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {bool} Indicates if account was created successfully.
+	 * @apiSuccess {bool} Result Indicates if account was created successfully.
 	 * @apiSuccess {int} [ErrorCode] Error code
 	 * 
 	 * @apiSuccessExample {json} Success response example:
@@ -402,8 +405,8 @@ class StandardAuthModule extends AApiModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Updates existing basic account.
 	 * 
-	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
-	 * @apiParam {string=UpdateAccount} Method=UpdateAccount Method name.
+	 * @apiParam {string=StandardAuth} Module Module name.
+	 * @apiParam {string=UpdateAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {int} AccountId Identificator of account to update.
 	 * @apiParam {string} Login New value of account login.
@@ -416,14 +419,14 @@ class StandardAuthModule extends AApiModule
 	 *	AuthToken: 'token_value',
 	 *	AccountId: 123,
 	 *	Login: 'account_login',
-	 *	Password: 'account_password',
+	 *	Password: 'account_password'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {array|bool} Result
+	 * @apiSuccess {mixed} Result Object in case of success, otherwise - false.
 	 * @apiSuccess {string} Result.iObjectId Identificator of updated account.
-	 * @apiSuccess {int} [ErrorCode] Error code
+	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
@@ -490,8 +493,8 @@ class StandardAuthModule extends AApiModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Deletes basic account.
 	 * 
-	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
-	 * @apiParam {string=DeleteAccount} Method=DeleteAccount Method name.
+	 * @apiParam {string=StandardAuth} Module Module name.
+	 * @apiParam {string=DeleteAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {int} AccountId Identificator of account to delete.
 	 * 
@@ -505,8 +508,8 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {bool} Indicates if account was deleted successfully.
-	 * @apiSuccess {int} [ErrorCode] Error code
+	 * @apiSuccess {bool} Result Indicates if account was deleted successfully.
+	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
@@ -559,8 +562,8 @@ class StandardAuthModule extends AApiModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Obtains basic account for specified user.
 	 * 
-	 * @apiParam {string=StandardAuth} Module=StandardAuth Module name.
-	 * @apiParam {string=GetUserAccounts} Method=GetUserAccounts Method name.
+	 * @apiParam {string=StandardAuth} Module Module name.
+	 * @apiParam {string=GetUserAccounts} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {int} UserId User identifier.
 	 * 
@@ -574,8 +577,8 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {array|bool} List of account objects in case of success. Account object is like {id: 234, login: 'account_login'}
-	 * @apiSuccess {int} [ErrorCode] Error code
+	 * @apiSuccess {mixed} Result List of account objects in case of success, otherwise - false. Account object is like {id: 234, login: 'account_login'}.
+	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
