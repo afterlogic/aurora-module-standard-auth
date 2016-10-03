@@ -213,22 +213,23 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=Login} Method Method name.
-	 * @apiParam {string} Login Account login.
-	 * @apiParam {string} Password Account passwors.
-	 * @apiParam {bool} [SignMe] Indicates if it is necessary to remember user between sessions.
+	 * @apiParam {string} Parameters JSON.stringified object <br>
+	 * {<br>
+	 * &emsp; **Login** *string* Account login.<br>
+	 * &emsp; **Password** *string* Account passwors.<br>
+	 * &emsp; **SignMe** *bool* Indicates if it is necessary to remember user between sessions. *optional*<br>
+	 * }
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'Login',
-	 *  Login: 'account_login',
-	 *  Password: 'account_password',
-	 *  SignMe: false
+	 *	Parameters: '{ Login: "login_value", Password: "password_value", SignMe: true }'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {mixed} Result Object in case of success, otherwise - false.
+	 * @apiSuccess {mixed} Result Object in case of success, otherwise **false**.
 	 * @apiSuccess {string} Result.AuthToken Auth token.
 	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
@@ -293,18 +294,19 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=CreateUserAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
-	 * @apiParam {int} UserId User identificator.
-	 * @apiParam {string} Login New account login.
-	 * @apiParam {string} Password New account password.
+	 * @apiParam {string} Parameters JSON.stringified object <br>
+	 * {<br>
+	 * &emsp; **UserId** *int* User identificator.<br>
+	 * &emsp; **Login** *string* New account login.<br>
+	 * &emsp; **Password** *string* Password New account password.<br>
+	 * }
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'CreateUserAccount',
 	 *	AuthToken: 'token_value',
-	 *	UserId: 123,
-	 *	Login: 'account_login',
-	 *	Password: 'account_password'
+	 *	Parameters: '{ UserId: 123, Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
@@ -351,16 +353,18 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=CreateAuthenticatedUserAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
-	 * @apiParam {string} Login New account login.
-	 * @apiParam {string} Password New account password.
+	 * @apiParam {string} Parameters JSON.stringified object <br>
+	 * {<br>
+	 * &emsp; **Login** *string* New account login.<br>
+	 * &emsp; **Password** *string* New account password.<br>
+	 * }
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'CreateAuthenticatedUserAccount',
 	 *	AuthToken: 'token_value',
-	 *	Login: 'account_login',
-	 *	Password: 'account_password',
+	 *	Parameters: '{ Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
@@ -407,23 +411,24 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=UpdateAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
-	 * @apiParam {int} AccountId Identificator of account to update.
-	 * @apiParam {string} [Login] New value of account login.
-	 * @apiParam {string} [Password] New value of account password.
+	 * @apiParam {string} Parameters JSON.stringified object <br>
+	 * {<br>
+	 * &emsp; **AccountId** *int* AccountId Identificator of account to update.<br>
+	 * &emsp; **Login** *string* New value of account login. *optional*<br>
+	 * &emsp; **Password** *string* New value of account password. *optional*<br>
+	 * }
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'UpdateAccount',
 	 *	AuthToken: 'token_value',
-	 *	AccountId: 123,
-	 *	Login: 'account_login',
-	 *	Password: 'account_password'
+	 *	Parameters: '{ AccountId: 123, Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {mixed} Result Object in case of success, otherwise - false.
+	 * @apiSuccess {mixed} Result Object in case of success, otherwise **false**.
 	 * @apiSuccess {string} Result.iObjectId Identificator of updated account.
 	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
@@ -448,9 +453,7 @@ class StandardAuthModule extends AApiModule
 	 * @param int $AccountId Identificator of account to update.
 	 * @param string $Login New value of account login.
 	 * @param string $Password New value of account password.
-	 * 
 	 * @return array|bool
-	 * 
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
@@ -495,14 +498,17 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=DeleteAccount} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
-	 * @apiParam {int} AccountId Identificator of account to delete.
+	 * @apiParam {string} Parameters JSON.stringified object <br>
+	 * {<br>
+	 * &emsp; **AccountId** *int* Identificator of account to delete.<br>
+	 * }
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
-	 *	Method: 'UpdateAccount',
+	 *	Method: 'DeleteAccount',
 	 *	AuthToken: 'token_value',
-	 *	AccountId: 123
+	 *	Parameters: '{ AccountId: 123 }'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
@@ -564,19 +570,22 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=GetUserAccounts} Method Method name.
 	 * @apiParam {string} AuthToken Auth token.
-	 * @apiParam {int} UserId User identifier.
+	 * @apiParam {string} Parameters JSON.stringified object <br>
+	 * {<br>
+	 * &emsp; **UserId** *int* User identifier.<br>
+	 * }
 	 * 
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'GetUserAccounts',
 	 *	AuthToken: 'token_value',
-	 *	UserId: 123
+	 *	Parameters: '{ UserId: 123 }'
 	 * }
 	 * 
 	 * @apiSuccess {string} Module Module name.
 	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {mixed} Result List of account objects in case of success, otherwise - false. Account object is like {id: 234, login: 'account_login'}.
+	 * @apiSuccess {mixed} Result List of account objects in case of success, otherwise **false**. Account object is like {id: 234, login: 'account_login'}.
 	 * @apiSuccess {int} [ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
@@ -598,7 +607,6 @@ class StandardAuthModule extends AApiModule
 	 * Obtains basic account for specified user.
 	 * 
 	 * @param int $UserId User identifier.
-	 * 
 	 * @return array|bool
 	 */
 	public function GetUserAccounts($UserId)
