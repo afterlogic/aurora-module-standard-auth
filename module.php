@@ -227,25 +227,30 @@ class StandardAuthModule extends AApiModule
 	 *	Parameters: '{ Login: "login_value", Password: "password_value", SignMe: true }'
 	 * }
 	 * 
-	 * @apiSuccess {string} Module Module name.
-	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {mixed} Result Object in case of success, otherwise **false**.
-	 * @apiSuccess {string} Result.AuthToken Auth token.
-	 * @apiSuccess {int} [ErrorCode] Error code.
+	 * @apiSuccess {object[]} Result Array of response objects.
+	 * @apiSuccess {string} Result.Module Module name.
+	 * @apiSuccess {string} Result.Method Method name.
+	 * @apiSuccess {mixed} Result.Result Object in case of success, otherwise **false**.
+	 * @apiSuccess {string} Result.Result.AuthToken Auth token.
+	 * @apiSuccess {int} [Result.ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'Login',
-	 *	Result: {AuthToken: 'token_value'}
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'Login',
+	 *		Result: {AuthToken: 'token_value'}
+	 *	}]
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'Login',
-	 *	Result: false,
-	 *	ErrorCode: 102
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'Login',
+	 *		Result: false,
+	 *		ErrorCode: 102
+	 *	}]
 	 * }
 	 */
 	/**
@@ -309,24 +314,29 @@ class StandardAuthModule extends AApiModule
 	 *	Parameters: '{ UserId: 123, Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
-	 * @apiSuccess {string} Module Module name.
-	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {bool} Result Indicates if account was created successfully.
-	 * @apiSuccess {int} [ErrorCode] Error code.
+	 * @apiSuccess {object[]} Result Array of response objects.
+	 * @apiSuccess {string} Result.Module Module name.
+	 * @apiSuccess {string} Result.Method Method name.
+	 * @apiSuccess {bool} Result.Result Indicates if account was created successfully.
+	 * @apiSuccess {int} [Result.ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'CreateUserAccount',
-	 *	Result: true
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'CreateUserAccount',
+	 *		Result: true
+	 *	}]
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'CreateUserAccount',
-	 *	Result: false,
-	 *	ErrorCode: 102
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'CreateUserAccount',
+	 *		Result: false,
+	 *		ErrorCode: 102
+	 *	}]
 	 * }
 	 */
 	/**
@@ -367,24 +377,29 @@ class StandardAuthModule extends AApiModule
 	 *	Parameters: '{ Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
-	 * @apiSuccess {string} Module Module name.
-	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {bool} Result Indicates if account was created successfully.
-	 * @apiSuccess {int} [ErrorCode] Error code
+	 * @apiSuccess {object[]} Result Array of response objects.
+	 * @apiSuccess {string} Result.Module Module name.
+	 * @apiSuccess {string} Result.Method Method name.
+	 * @apiSuccess {bool} Result.Result Indicates if account was created successfully.
+	 * @apiSuccess {int} [Result.ErrorCode] Error code
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'CreateAuthenticatedUserAccount',
-	 *	Result: true
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'CreateAuthenticatedUserAccount',
+	 *		Result: true
+	 *	}]
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'CreateAuthenticatedUserAccount',
-	 *	Result: false,
-	 *	ErrorCode: 102
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'CreateAuthenticatedUserAccount',
+	 *		Result: false,
+	 *		ErrorCode: 102
+	 *	}]
 	 * }
 	 */
 	/**
@@ -426,25 +441,30 @@ class StandardAuthModule extends AApiModule
 	 *	Parameters: '{ AccountId: 123, Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
-	 * @apiSuccess {string} Module Module name.
-	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {mixed} Result Object in case of success, otherwise **false**.
-	 * @apiSuccess {string} Result.iObjectId Identificator of updated account.
-	 * @apiSuccess {int} [ErrorCode] Error code.
+	 * @apiSuccess {object[]} Result Array of response objects.
+	 * @apiSuccess {string} Result.Module Module name.
+	 * @apiSuccess {string} Result.Method Method name.
+	 * @apiSuccess {mixed} Result.Result Object in case of success, otherwise **false**.
+	 * @apiSuccess {string} Result.Result.iObjectId Identificator of updated account.
+	 * @apiSuccess {int} [Result.ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'UpdateAccount',
-	 *	Result: true
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'UpdateAccount',
+	 *		Result: true
+	 *	}]
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'UpdateAccount',
-	 *	Result: false,
-	 *	ErrorCode: 102
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'UpdateAccount',
+	 *		Result: false,
+	 *		ErrorCode: 102
+	 *	}]
 	 * }
 	 */
 	/**
@@ -511,24 +531,29 @@ class StandardAuthModule extends AApiModule
 	 *	Parameters: '{ AccountId: 123 }'
 	 * }
 	 * 
-	 * @apiSuccess {string} Module Module name.
-	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {bool} Result Indicates if account was deleted successfully.
-	 * @apiSuccess {int} [ErrorCode] Error code.
+	 * @apiSuccess {object[]} Result Array of response objects.
+	 * @apiSuccess {string} Result.Module Module name.
+	 * @apiSuccess {string} Result.Method Method name.
+	 * @apiSuccess {bool} Result.Result Indicates if account was deleted successfully.
+	 * @apiSuccess {int} [Result.ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'DeleteAccount',
-	 *	Result: true
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'DeleteAccount',
+	 *		Result: true
+	 *	}]
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'DeleteAccount',
-	 *	Result: false,
-	 *	ErrorCode: 102
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'DeleteAccount',
+	 *		Result: false,
+	 *		ErrorCode: 102
+	 *	}]
 	 * }
 	 */
 	/**
@@ -583,24 +608,29 @@ class StandardAuthModule extends AApiModule
 	 *	Parameters: '{ UserId: 123 }'
 	 * }
 	 * 
-	 * @apiSuccess {string} Module Module name.
-	 * @apiSuccess {string} Method Method name.
-	 * @apiSuccess {mixed} Result List of account objects in case of success, otherwise **false**. Account object is like {id: 234, login: 'account_login'}.
-	 * @apiSuccess {int} [ErrorCode] Error code.
+	 * @apiSuccess {object[]} Result Array of response objects.
+	 * @apiSuccess {string} Result.Module Module name.
+	 * @apiSuccess {string} Result.Method Method name.
+	 * @apiSuccess {mixed} Result.Result List of account objects in case of success, otherwise **false**. Account object is like {id: 234, login: 'account_login'}.
+	 * @apiSuccess {int} [Result.ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'GetUserAccounts',
-	 *	Result: [{id: 234, login: 'account_login234'}, {id: 235, login: 'account_login235'}]
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'GetUserAccounts',
+	 *		Result: [{id: 234, login: 'account_login234'}, {id: 235, login: 'account_login235'}]
+	 *	}]
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Module: 'StandardAuth',
-	 *	Method: 'GetUserAccounts',
-	 *	Result: false,
-	 *	ErrorCode: 102
+	 *	Result: [{
+	 *		Module: 'StandardAuth',
+	 *		Method: 'GetUserAccounts',
+	 *		Result: false,
+	 *		ErrorCode: 102
+	 *	}]
 	 * }
 	 */
 	/**
