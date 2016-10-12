@@ -208,7 +208,9 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ Login
 	 * @apiName Login
-	 * @apiGroup Standard Auth
+	 * @apiGroup StandardAuth
+	 * @apiDefine StandardAuth Standard Auth Module
+	 * This module provides API for authentication by login/password that relies on database.
 	 * @apiDescription Broadcasts event Login to other modules, gets responses from them and returns AuthToken.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -293,7 +295,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ CreateUserAccount
 	 * @apiName CreateUserAccount
-	 * @apiGroup Standard Auth
+	 * @apiGroup StandardAuth
 	 * @apiDescription Creates basic account for specified user.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -357,7 +359,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ CreateAuthenticatedUserAccount
 	 * @apiName CreateAuthenticatedUserAccount
-	 * @apiGroup Standard Auth
+	 * @apiGroup StandardAuth
 	 * @apiDescription Creates basic account for authenticated user.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -420,7 +422,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ UpdateAccount
 	 * @apiName UpdateAccount
-	 * @apiGroup Standard Auth
+	 * @apiGroup StandardAuth
 	 * @apiDescription Updates existing basic account.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -512,7 +514,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ DeleteAccount
 	 * @apiName DeleteAccount
-	 * @apiGroup Standard Auth
+	 * @apiGroup StandardAuth
 	 * @apiDescription Deletes basic account.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
@@ -589,7 +591,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * @api {post} ?/Api/ GetUserAccounts
 	 * @apiName GetUserAccounts
-	 * @apiGroup Standard Auth
+	 * @apiGroup StandardAuth
 	 * @apiDescription Obtains basic account for specified user.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
