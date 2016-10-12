@@ -206,11 +206,14 @@ class StandardAuthModule extends AApiModule
 	
 	/***** public functions might be called with web API *****/
 	/**
+	 * @apiDefine StandardAuth Standard Auth Module
+	 * This module provides API for authentication by login/password that relies on database.
+	 */
+	
+	/**
 	 * @api {post} ?/Api/ Login
 	 * @apiName Login
 	 * @apiGroup StandardAuth
-	 * @apiDefine StandardAuth Standard Auth Module
-	 * This module provides API for authentication by login/password that relies on database.
 	 * @apiDescription Broadcasts event Login to other modules, gets responses from them and returns AuthToken.
 	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
