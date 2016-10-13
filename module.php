@@ -47,19 +47,15 @@ class StandardAuthModule extends AApiModule
 	 * @param array $aParams Credentials for logging in.
 	 * @param mixed $mResult Is passed by reference.
 	 */
-	public function onLogin($aParams, &$mResult)
+	public function onLogin($Login, $Password, $SignMe, &$mResult)
 	{
-		$sLogin = $aParams['Login'];
-		$sPassword = $aParams['Password'];
-		$bSignMe = $aParams['SignMe'];
-		
-		$oAccount = $this->oApiAccountsManager->getAccountByCredentials($sLogin, $sPassword);
+		$oAccount = $this->oApiAccountsManager->getAccountByCredentials($Login, $Password);
 		
 		if ($oAccount)
 		{
 			$mResult = array(
 				'token' => 'auth',
-				'sign-me' => $bSignMe,
+				'sign-me' => $SignMe,
 				'id' => $oAccount->IdUser
 			);
 		}
@@ -72,11 +68,8 @@ class StandardAuthModule extends AApiModule
 	 * @param array $aParams New account credentials.
 	 * @param type $mResult Is passed by reference.
 	 */
-	public function onRegister($aParams, &$mResult)
+	public function onRegister($sLogin, $sPassword, $iUserId, &$mResult)
 	{
-		$sLogin = $aParams['Login'];
-		$sPassword = $aParams['Password'];
-		$iUserId = $aParams['UserId'];
 		$mResult = $this->CreateUserAccount($iUserId, $sLogin, $sPassword);
 	}
 	
@@ -132,18 +125,24 @@ class StandardAuthModule extends AApiModule
 	{
 		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
 		
-		$this->broadcastEvent('CheckAccountExists', array($sLogin));
+		$this->broadcastEvent(
+			'CheckAccountExists', 
+			array(
+				$sLogin
+			)
+		);
 		
 		$oEventResult = null;
-		$this->broadcastEvent('CreateAccount', array(
+		$this->broadcastEvent(
+			'CreateAccount', 
 			array(
 				'TenantId' => $iTenantId,
 				'UserId' => $iUserId,
 				'login' => $sLogin,
 				'password' => $sPassword
 			),
-			'result' => &$oEventResult
-		));
+			$oEventResult
+		);
 		
 		//	if ($this->oApiCapabilityManager->isPersonalContactsSupported($oAccount))
 		if ($oEventResult instanceOf \CUser)
@@ -273,14 +272,15 @@ class StandardAuthModule extends AApiModule
 		
 		$mResult = false;
 		
-		$this->broadcastEvent('Login', array(
+		$this->broadcastEvent(
+			'Login', 
 			array (
 				'Login' => $Login,
 				'Password' => $Password,
 				'SignMe' => $SignMe
 			),
-			&$mResult
-		));
+			$mResult
+		);
 		
 		if (is_array($mResult))
 		{
