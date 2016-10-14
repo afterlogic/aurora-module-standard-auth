@@ -47,15 +47,18 @@ class StandardAuthModule extends AApiModule
 	 * @param array $aParams Credentials for logging in.
 	 * @param mixed $mResult Is passed by reference.
 	 */
-	public function onLogin($Login, $Password, $SignMe, &$mResult)
+	public function onLogin($aArgs, &$mResult)
 	{
-		$oAccount = $this->oApiAccountsManager->getAccountByCredentials($Login, $Password);
+		$oAccount = $this->oApiAccountsManager->getAccountByCredentials(
+			$aArgs['Login'], 
+			$aArgs['Password']
+		);
 		
 		if ($oAccount)
 		{
 			$mResult = array(
 				'token' => 'auth',
-				'sign-me' => $SignMe,
+				'sign-me' => $aArgs['SignMe'],
 				'id' => $oAccount->IdUser
 			);
 		}
@@ -68,9 +71,13 @@ class StandardAuthModule extends AApiModule
 	 * @param array $aParams New account credentials.
 	 * @param type $mResult Is passed by reference.
 	 */
-	public function onRegister($sLogin, $sPassword, $iUserId, &$mResult)
+	public function onRegister($aArgs, &$mResult)
 	{
-		$mResult = $this->CreateUserAccount($iUserId, $sLogin, $sPassword);
+		$mResult = $this->CreateUserAccount(
+			$aArgs['UserId'], 
+			$aArgs['Login'], 
+			$aArgs['Password']
+		);
 	}
 	
 	/**
@@ -80,10 +87,10 @@ class StandardAuthModule extends AApiModule
 	 * @param string $sLogin Login for checking.
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
-	public function onCheckAccountExists($sLogin)
+	public function onCheckAccountExists($aArgs)
 	{
 		$oAccount = \CAccount::createInstance();
-		$oAccount->Login = $sLogin;
+		$oAccount->Login = $aArgs['Login'];
 		if ($this->oApiAccountsManager->isExists($oAccount))
 		{
 			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccountExists);
@@ -125,31 +132,33 @@ class StandardAuthModule extends AApiModule
 	{
 		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
 		
+		$aArgs = array(
+				'Login' => $sLogin
+		);
 		$this->broadcastEvent(
 			'CheckAccountExists', 
-			array(
-				$sLogin
-			)
+			$aArgs
 		);
 		
-		$oEventResult = null;
+		$mResult = null;
+		$aArgs = array(
+			'TenantId' => $iTenantId,
+			'UserId' => $iUserId,
+			'login' => $sLogin,
+			'password' => $sPassword
+		);
 		$this->broadcastEvent(
 			'CreateAccount', 
-			array(
-				'TenantId' => $iTenantId,
-				'UserId' => $iUserId,
-				'login' => $sLogin,
-				'password' => $sPassword
-			),
-			$oEventResult
+			$aArgs,
+			$mResult
 		);
 		
 		//	if ($this->oApiCapabilityManager->isPersonalContactsSupported($oAccount))
-		if ($oEventResult instanceOf \CUser)
+		if ($mResult instanceOf \CUser)
 		{
 			$oAccount = \CAccount::createInstance();
 			
-			$oAccount->IdUser = $oEventResult->iId;
+			$oAccount->IdUser = $mResult->iId;
 			$oAccount->Login = $sLogin;
 			$oAccount->Password = $sPassword;
 			
@@ -272,13 +281,14 @@ class StandardAuthModule extends AApiModule
 		
 		$mResult = false;
 		
+		$aArgs = array (
+			'Login' => $Login,
+			'Password' => $Password,
+			'SignMe' => $SignMe
+		);
 		$this->broadcastEvent(
 			'Login', 
-			array (
-				'Login' => $Login,
-				'Password' => $Password,
-				'SignMe' => $SignMe
-			),
+			$aArgs,
 			$mResult
 		);
 		
