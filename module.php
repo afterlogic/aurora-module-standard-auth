@@ -103,7 +103,7 @@ class StandardAuthModule extends AApiModule
 	 * @ignore
 	 * @param int $iUserId User identificator.
 	 */
-	public function onAfterDeleteUser($iUserId)
+	public function onAfterDeleteUser($aArgs, &$iUserId)
 	{
 		$mResult = $this->oApiAccountsManager->getUserAccounts($iUserId);
 		
