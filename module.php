@@ -59,7 +59,8 @@ class StandardAuthModule extends AApiModule
 			$mResult = array(
 				'token' => 'auth',
 				'sign-me' => $aArgs['SignMe'],
-				'id' => $oAccount->IdUser
+				'id' => $oAccount->IdUser,
+				'account' => $oAccount->iId
 			);
 		}
 	}
