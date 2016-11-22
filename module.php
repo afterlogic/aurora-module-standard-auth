@@ -251,21 +251,17 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'CreateUserAccount',
-	 *		Result: true
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateUserAccount',
+	 *	Result: true
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'CreateUserAccount',
-	 *		Result: false,
-	 *		ErrorCode: 102
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateUserAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
 	 * }
 	 */
 	/**
@@ -314,21 +310,17 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'CreateAuthenticatedUserAccount',
-	 *		Result: true
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateAuthenticatedUserAccount',
+	 *	Result: true
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'CreateAuthenticatedUserAccount',
-	 *		Result: false,
-	 *		ErrorCode: 102
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'CreateAuthenticatedUserAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
 	 * }
 	 */
 	/**
@@ -379,21 +371,17 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'UpdateAccount',
-	 *		Result: true
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'UpdateAccount',
+	 *	Result: true
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'UpdateAccount',
-	 *		Result: false,
-	 *		ErrorCode: 102
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'UpdateAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
 	 * }
 	 */
 	/**
@@ -468,21 +456,17 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'DeleteAccount',
-	 *		Result: true
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'DeleteAccount',
+	 *	Result: true
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'DeleteAccount',
-	 *		Result: false,
-	 *		ErrorCode: 102
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'DeleteAccount',
+	 *	Result: false,
+	 *	ErrorCode: 102
 	 * }
 	 */
 	/**
@@ -545,21 +529,17 @@ class StandardAuthModule extends AApiModule
 	 * 
 	 * @apiSuccessExample {json} Success response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'GetUserAccounts',
-	 *		Result: [{id: 234, login: 'account_login234'}, {id: 235, login: 'account_login235'}]
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'GetUserAccounts',
+	 *	Result: [{id: 234, login: 'account_login234'}, {id: 235, login: 'account_login235'}]
 	 * }
 	 * 
 	 * @apiSuccessExample {json} Error response example:
 	 * {
-	 *	Result: [{
-	 *		Module: 'StandardAuth',
-	 *		Method: 'GetUserAccounts',
-	 *		Result: false,
-	 *		ErrorCode: 102
-	 *	}]
+	 *	Module: 'StandardAuth',
+	 *	Method: 'GetUserAccounts',
+	 *	Result: false,
+	 *	ErrorCode: 102
 	 * }
 	 */
 	/**
