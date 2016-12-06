@@ -38,7 +38,7 @@ class StandardAuthModule extends AApiModule
 		$this->subscribeEvent('Register', array($this, 'onRegister'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
-		$this->subscribeEvent('Core::GetAccounts::after', array($this, 'onAfterGetAccounts'));
+		$this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
 	}
 	
 	/**
@@ -123,16 +123,15 @@ class StandardAuthModule extends AApiModule
 	 * @param array $aArgs
 	 * @param array $aResult
 	 */
-	public function onAfterGetAccounts($aArgs, &$aResult)
+	public function onGetAccounts($aArgs, &$aResult)
 	{
-		$bWithPassword = false;
+		$bWithPassword = $aArgs['WithPassword'];
 		$aUserInfo = \CApi::getAuthenticatedUserInfo($aArgs['AuthToken']);
 		if (isset($aUserInfo['userId']))
 		{
 			$mResult = $this->oApiAccountsManager->getUserAccounts($aUserInfo['userId'], $bWithPassword);
 			if (is_array($mResult))
 			{
-				$aItems = array();
 				foreach($mResult as $oItem)
 				{
 					$aItem = array(
@@ -146,12 +145,8 @@ class StandardAuthModule extends AApiModule
 					{
 						$aItem['Password'] = $oItem->Password;
 					}
-					$aItems[] = $aItem;
+					$aResult[] = $aItem;
 				}
-				$aResult = array_merge(
-					$aResult, 
-					$aItems
-				);
 			}
 		}
 	}	
