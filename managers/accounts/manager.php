@@ -303,14 +303,21 @@ class CApiStandardAuthAccountsManager extends AApiManager
 	 * 
 	 * @return array|boolean
 	 */
-	public function getUserAccounts($iUserId)
+	public function getUserAccounts($iUserId, $bWithPassword = false)
 	{
 		$mResult = false;
 		try
 		{
+			$aFields = array(
+				'Login'
+			);
+			if ($bWithPassword)
+			{
+				$aFields[] = 'Password';
+			}
 			$mResult = $this->oEavManager->getEntities(
 				'CAccount',
-				array('Login'),
+				$aFields,
 				0,
 				0,
 				array('IdUser' => $iUserId, 'IsDisabled' => false)
