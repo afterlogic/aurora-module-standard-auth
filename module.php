@@ -103,7 +103,7 @@ class StandardAuthModule extends AApiModule
 	 * Deletes all basic accounts which are owened by the specified user.
 	 * 
 	 * @ignore
-	 * @param int $iUserId User identificator.
+	 * @param int $iUserId User identifier.
 	 */
 	public function onAfterDeleteUser($aArgs, &$iUserId)
 	{
@@ -156,8 +156,8 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * Creates account with credentials.
 	 * 
-	 * @param int $iTenantId Tenant identificator.
-	 * @param int $iUserId User identificator.
+	 * @param int $iTenantId Tenant identifier.
+	 * @param int $iUserId User identifier.
 	 * @param string $sLogin New account login.
 	 * @param string $sPassword New account password.
 	 * @return bool|array
@@ -264,7 +264,7 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
-	 * &emsp; **UserId** *int* User identificator.<br>
+	 * &emsp; **UserId** *int* User identifier.<br>
 	 * &emsp; **Login** *string* New account login.<br>
 	 * &emsp; **Password** *string* Password New account password.<br>
 	 * }
@@ -301,7 +301,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * Creates basic account for specified user.
 	 * 
-	 * @param int $UserId User identificator.
+	 * @param int $UserId User identifier.
 	 * @param string $Login New account login.
 	 * @param string $Password New account password.
 	 * @return bool
@@ -383,7 +383,7 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
-	 * &emsp; **AccountId** *int* AccountId Identificator of account to update.<br>
+	 * &emsp; **AccountId** *int* AccountId Identifier of account to update.<br>
 	 * &emsp; **Login** *string* New value of account login. *optional*<br>
 	 * &emsp; **Password** *string* New value of account password. *optional*<br>
 	 * }
@@ -400,7 +400,7 @@ class StandardAuthModule extends AApiModule
 	 * @apiSuccess {string} Result.Module Module name.
 	 * @apiSuccess {string} Result.Method Method name.
 	 * @apiSuccess {mixed} Result.Result Object in case of success, otherwise **false**.
-	 * @apiSuccess {string} Result.Result.iObjectId Identificator of updated account.
+	 * @apiSuccess {string} Result.Result.iObjectId Identifier of updated account.
 	 * @apiSuccess {int} [Result.ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
@@ -421,7 +421,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * Updates existing basic account.
 	 * 
-	 * @param int $AccountId Identificator of account to update.
+	 * @param int $AccountId Identifier of account to update.
 	 * @param string $Login New value of account login.
 	 * @param string $Password New value of account password.
 	 * @return array|bool
@@ -471,7 +471,7 @@ class StandardAuthModule extends AApiModule
 	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
-	 * &emsp; **AccountId** *int* Identificator of account to delete.<br>
+	 * &emsp; **AccountId** *int* Identifier of account to delete.<br>
 	 * }
 	 * 
 	 * @apiParamExample {json} Request-Example:
@@ -506,7 +506,7 @@ class StandardAuthModule extends AApiModule
 	/**
 	 * Deletes basic account.
 	 * 
-	 * @param int $AccountId Identificator of account to delete.
+	 * @param int $AccountId Identifier of account to delete.
 	 * @return bool
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
