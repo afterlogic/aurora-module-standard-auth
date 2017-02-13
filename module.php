@@ -138,7 +138,7 @@ class StandardAuthModule extends AApiModule
 						'Type' => $oItem->getName(),
 						'Module' => $oItem->getModule(),
 						'Id' => $oItem->iId,
-						'UUID' => $oItem->sUUID,
+						'UUID' => $oItem->UUID,
 						'Login' => $oItem->Login
 					);
 					if ($bWithPassword)
