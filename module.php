@@ -61,7 +61,7 @@ class StandardAuthModule extends AApiModule
 				'token' => 'auth',
 				'sign-me' => $aArgs['SignMe'],
 				'id' => $oAccount->IdUser,
-				'account' => $oAccount->iId
+				'account' => $oAccount->EntityId
 			);
 		}
 	}
@@ -113,7 +113,7 @@ class StandardAuthModule extends AApiModule
 		{
 			foreach($mResult as $oItem)
 			{
-				$this->DeleteAccount($oItem->iId);
+				$this->DeleteAccount($oItem->EntityId);
 			}
 		}
 	}
@@ -137,7 +137,7 @@ class StandardAuthModule extends AApiModule
 					$aItem = array(
 						'Type' => $oItem->getName(),
 						'Module' => $oItem->getModule(),
-						'Id' => $oItem->iId,
+						'Id' => $oItem->EntityId,
 						'UUID' => $oItem->UUID,
 						'Login' => $oItem->Login
 					);
@@ -193,7 +193,7 @@ class StandardAuthModule extends AApiModule
 		{
 			$oAccount = \CAccount::createInstance();
 			
-			$oAccount->IdUser = $mResult->iId;
+			$oAccount->IdUser = $mResult->EntityId;
 			$oAccount->Login = $sLogin;
 			$oAccount->Password = $sPassword;
 			
@@ -204,7 +204,7 @@ class StandardAuthModule extends AApiModule
 			
 			$this->oApiAccountsManager->createAccount($oAccount);
 			return $oAccount ? array(
-				'iObjectId' => $oAccount->iId
+				'EntityId' => $oAccount->EntityId
 			) : false;
 		}
 		else
@@ -235,7 +235,7 @@ class StandardAuthModule extends AApiModule
 			$this->oApiAccountsManager->createAccount($oAccount);
 			
 			return $oAccount ? array(
-				'iObjectId' => $oAccount->iId
+				'EntityId' => $oAccount->EntityId
 			) : false;
 		}
 		else
@@ -400,7 +400,7 @@ class StandardAuthModule extends AApiModule
 	 * @apiSuccess {string} Result.Module Module name.
 	 * @apiSuccess {string} Result.Method Method name.
 	 * @apiSuccess {mixed} Result.Result Object in case of success, otherwise **false**.
-	 * @apiSuccess {string} Result.Result.iObjectId Identifier of updated account.
+	 * @apiSuccess {string} Result.Result.EntityId Identifier of updated account.
 	 * @apiSuccess {int} [Result.ErrorCode] Error code.
 	 * 
 	 * @apiSuccessExample {json} Success response example:
@@ -449,7 +449,7 @@ class StandardAuthModule extends AApiModule
 			}
 			
 			return $oAccount ? array(
-				'iObjectId' => $oAccount->iId
+				'EntityId' => $oAccount->EntityId
 			) : false;
 		}
 		else
@@ -587,7 +587,7 @@ class StandardAuthModule extends AApiModule
 		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
 		
 		$oUser = \CApi::getAuthenticatedUser();
-		if ($oUser->Role === \EUserRole::NormalUser && $oUser->iId != $UserId)
+		if ($oUser->Role === \EUserRole::NormalUser && $oUser->EntityId != $UserId)
 		{
 			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccessDenied);
 		}
@@ -599,7 +599,7 @@ class StandardAuthModule extends AApiModule
 			foreach($mResult as $oItem)
 			{
 				$aAccounts[] = array(
-					'id' => $oItem->iId,
+					'id' => $oItem->EntityId,
 					'login' => $oItem->Login
 				);
 			}

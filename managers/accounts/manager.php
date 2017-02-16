@@ -171,7 +171,7 @@ class CApiStandardAuthAccountsManager extends AApiManager
 			{
 				foreach($aResults as $oItem)
 				{
-					$aResult[$oItem->iId] = array(
+					$aResult[$oItem->EntityId] = array(
 						$oItem->Login,
 						$oItem->Password,
 						$oItem->IdUser,
@@ -302,7 +302,7 @@ class CApiStandardAuthAccountsManager extends AApiManager
 		$bResult = false;
 		try
 		{
-			$bResult = $this->oEavManager->deleteEntity($oAccount->iId);
+			$bResult = $this->oEavManager->deleteEntity($oAccount->EntityId);
 		}
 		catch (CApiBaseException $oException)
 		{
