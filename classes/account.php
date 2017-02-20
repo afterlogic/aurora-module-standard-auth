@@ -30,17 +30,16 @@ class CAccount extends AEntity
 	 * 
 	 * @return void
 	 */
-	public function __construct($sModule, $oParams)
+	public function __construct($sModule)
 	{
-		parent::__construct(get_class($this), $sModule);
-		
-		$this->setStaticMap(array(
+		$this->aStaticMap = array(
 			'IsDisabled'	=> array('bool', false),
 			'IdUser'		=> array('int', 0),
 			'Login'			=> array('string', ''),
 			'Password'		=> array('encrypted', ''),
 			'LastModified'  => array('datetime', date('Y-m-d H:i:s'))
-		));
+		);
+		parent::__construct($sModule);
 	}
 	
 	/**
@@ -48,7 +47,7 @@ class CAccount extends AEntity
 	 * 
 	 * @return bool
 	 */
-	public function isValid()
+	public function validate()
 	{
 		switch (true)
 		{
@@ -58,10 +57,5 @@ class CAccount extends AEntity
 		}
 
 		return true;
-	}
-	
-	public static function createInstance($sModule = 'Auth', $oParams = array())
-	{
-		return new CAccount($sModule, $oParams);
 	}
 }
