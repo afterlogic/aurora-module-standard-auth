@@ -23,7 +23,7 @@
  * @package Classes
  * @subpackage Users
  */
-class CAccount extends AEntity
+class CAccount extends CEntity
 {
 	/**
 	 * Creates a new instance of the object.
