@@ -43,9 +43,8 @@ class StandardAuthModule extends AApiModule
 	
 	/**
 	 * Tries to log in with specified credentials via StandardAuth module. Writes to $mResult array with auth token data if logging in was successfull.
-	 * 
 	 * @ignore
-	 * @param array $aParams Credentials for logging in.
+	 * @param array $aArgs Credentials for logging in.
 	 * @param mixed $mResult Is passed by reference.
 	 */
 	public function onLogin($aArgs, &$mResult)
@@ -68,9 +67,8 @@ class StandardAuthModule extends AApiModule
 	
 	/**
 	 * Creates account with specified credentials.
-	 * 
 	 * @ignore
-	 * @param array $aParams New account credentials.
+	 * @param array $aArgs New account credentials.
 	 * @param type $mResult Is passed by reference.
 	 */
 	public function onRegister($aArgs, &$mResult)
@@ -84,14 +82,13 @@ class StandardAuthModule extends AApiModule
 	
 	/**
 	 * Checks if module has account with specified login.
-	 * 
 	 * @ignore
-	 * @param string $sLogin Login for checking.
+	 * @param array $aArgs
 	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
-		$oAccount = \CAccount::createInstance();
+		$oAccount = new CAccount();
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->oApiAccountsManager->isExists($oAccount))
 		{
@@ -101,8 +98,8 @@ class StandardAuthModule extends AApiModule
 	
 	/**
 	 * Deletes all basic accounts which are owened by the specified user.
-	 * 
 	 * @ignore
+	 * @param array $aArgs
 	 * @param int $iUserId User identifier.
 	 */
 	public function onAfterDeleteUser($aArgs, &$iUserId)
@@ -188,10 +185,9 @@ class StandardAuthModule extends AApiModule
 			$mResult
 		);
 		
-		//	if ($this->oApiCapabilityManager->isPersonalContactsSupported($oAccount))
 		if ($mResult instanceOf \CUser)
 		{
-			$oAccount = \CAccount::createInstance();
+			$oAccount = new CAccount();
 			
 			$oAccount->IdUser = $mResult->EntityId;
 			$oAccount->Login = $sLogin;
