@@ -18,7 +18,9 @@
  * @package Modules
  */
 
-class StandardAuthModule extends AApiModule
+namespace Aurora\Modules;
+
+class StandardAuthModule extends \AApiModule
 {
 	public $oApiAccountsManager = null;
 	
@@ -88,7 +90,7 @@ class StandardAuthModule extends AApiModule
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
-		$oAccount = new CAccount();
+		$oAccount = new \CAccount();
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->oApiAccountsManager->isExists($oAccount))
 		{
@@ -106,7 +108,7 @@ class StandardAuthModule extends AApiModule
 	{
 		$mResult = $this->oApiAccountsManager->getUserAccounts($iUserId);
 		
-		if (is_array($mResult))
+		if (\is_array($mResult))
 		{
 			foreach($mResult as $oItem)
 			{
@@ -127,7 +129,7 @@ class StandardAuthModule extends AApiModule
 		if (isset($aUserInfo['userId']))
 		{
 			$mResult = $this->oApiAccountsManager->getUserAccounts($aUserInfo['userId'], $bWithPassword);
-			if (is_array($mResult))
+			if (\is_array($mResult))
 			{
 				foreach($mResult as $oItem)
 				{
@@ -187,7 +189,7 @@ class StandardAuthModule extends AApiModule
 		
 		if ($mResult instanceOf \CUser)
 		{
-			$oAccount = new CAccount();
+			$oAccount = new \CAccount();
 			
 			$oAccount->IdUser = $mResult->EntityId;
 			$oAccount->Login = $sLogin;
@@ -590,7 +592,7 @@ class StandardAuthModule extends AApiModule
 		
 		$aAccounts = array();
 		$mResult = $this->oApiAccountsManager->getUserAccounts($UserId);
-		if (is_array($mResult))
+		if (\is_array($mResult))
 		{
 			foreach($mResult as $oItem)
 			{
