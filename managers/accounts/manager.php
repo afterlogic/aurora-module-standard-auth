@@ -23,7 +23,7 @@
  * 
  * @package Accounts
  */
-class CApiStandardAuthAccountsManager extends AApiManager
+class CApiStandardAuthAccountsManager extends \Aurora\System\AbstractManager
 {
 	/**
 	 * @var CApiEavManager
@@ -31,13 +31,13 @@ class CApiStandardAuthAccountsManager extends AApiManager
 	public $oEavManager = null;
 	
 	/**
-	 * @param CApiGlobalManager &$oManager
+	 * @param \Aurora\System\GlobalManager &$oManager
 	 */
-	public function __construct(CApiGlobalManager &$oManager, $sForcedStorage = '', AApiModule $oModule = null)
+	public function __construct(\Aurora\System\GlobalManager &$oManager, $sForcedStorage = '', \Aurora\System\AbstractModule $oModule = null)
 	{
 		parent::__construct('accounts', $oManager, $oModule);
 		
-		$this->oEavManager = \CApi::GetSystemManager('eav', 'db');
+		$this->oEavManager = \Aurora\System\Api::GetSystemManager('eav', 'db');
 	}
 
 	/**
@@ -61,7 +61,7 @@ class CApiStandardAuthAccountsManager extends AApiManager
 			}
 			else
 			{
-				throw new CApiBaseException(Errs::Validation_InvalidParameters);
+				throw new \CApiBaseException(Errs::Validation_InvalidParameters);
 			}
 		}
 		catch (CApiBaseException $oException)
@@ -213,12 +213,12 @@ class CApiStandardAuthAccountsManager extends AApiManager
 				{
 					if (!$this->oEavManager->saveEntity($oAccount))
 					{
-						throw new CApiManagerException(Errs::UsersManager_UserCreateFailed);
+						throw new \CApiManagerException(Errs::UsersManager_UserCreateFailed);
 					}
 				}
 				else
 				{
-					throw new CApiManagerException(Errs::UsersManager_UserAlreadyExists);
+					throw new \CApiManagerException(Errs::UsersManager_UserAlreadyExists);
 				}
 			}
 
@@ -249,12 +249,12 @@ class CApiStandardAuthAccountsManager extends AApiManager
 //				{
 					if (!$this->oEavManager->saveEntity($oAccount))
 					{
-						throw new CApiManagerException(Errs::UsersManager_UserCreateFailed);
+						throw new \CApiManagerException(Errs::UsersManager_UserCreateFailed);
 					}
 //				}
 //				else
 //				{
-//					throw new CApiManagerException(Errs::UsersManager_UserAlreadyExists);
+//					throw new \CApiManagerException(Errs::UsersManager_UserAlreadyExists);
 //				}
 			}
 

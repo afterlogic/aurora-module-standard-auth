@@ -20,7 +20,7 @@
 
 namespace Aurora\Modules;
 
-class StandardAuthModule extends \AApiModule
+class StandardAuthModule extends \Aurora\System\AbstractModule
 {
 	public $oApiAccountsManager = null;
 	
@@ -125,7 +125,7 @@ class StandardAuthModule extends \AApiModule
 	public function onGetAccounts($aArgs, &$aResult)
 	{
 		$bWithPassword = $aArgs['WithPassword'];
-		$aUserInfo = \CApi::getAuthenticatedUserInfo($aArgs['AuthToken']);
+		$aUserInfo = \Aurora\System\Api::getAuthenticatedUserInfo($aArgs['AuthToken']);
 		if (isset($aUserInfo['userId']))
 		{
 			$mResult = $this->oApiAccountsManager->getUserAccounts($aUserInfo['userId'], $bWithPassword);
@@ -164,7 +164,7 @@ class StandardAuthModule extends \AApiModule
 	 */
 	public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
 	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
 		
 		$aArgs = array(
 				'Login' => $sLogin
@@ -222,7 +222,7 @@ class StandardAuthModule extends \AApiModule
 	 */
 	public function SaveAccount($oAccount)
 	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
 		
 //		$oAccount = $this->getDefaultAccountFromParam();
 		
@@ -306,7 +306,7 @@ class StandardAuthModule extends \AApiModule
 	 */
 	public function CreateUserAccount($UserId, $Login, $Password)
 	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
 		
 		return $this->CreateAccount(0, $UserId, $Login, $Password);
 	}
@@ -364,9 +364,9 @@ class StandardAuthModule extends \AApiModule
 	 */
 	public function CreateAuthenticatedUserAccount($Login, $Password)
 	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
 		
-		$iUserId = \CApi::getAuthenticatedUserId();
+		$iUserId = \Aurora\System\Api::getAuthenticatedUserId();
 		return $this->CreateAccount(0, $iUserId, $Login, $Password);
 	}
 	
@@ -427,7 +427,7 @@ class StandardAuthModule extends \AApiModule
 	 */
 	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
 	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
 		
 		if ($AccountId > 0)
 		{
@@ -510,7 +510,7 @@ class StandardAuthModule extends \AApiModule
 	 */
 	public function DeleteAccount($AccountId = 0)
 	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
 		
 		$bResult = false;
 		
@@ -582,9 +582,9 @@ class StandardAuthModule extends \AApiModule
 	 */
 	public function GetUserAccounts($UserId)
 	{
-		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
 		
-		$oUser = \CApi::getAuthenticatedUser();
+		$oUser = \Aurora\System\Api::getAuthenticatedUser();
 		if ($oUser->Role === \EUserRole::NormalUser && $oUser->EntityId != $UserId)
 		{
 			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccessDenied);

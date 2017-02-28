@@ -52,7 +52,7 @@ class CAccount extends CEntity
 		switch (true)
 		{
 			case false:
-				throw new CApiValidationException(Errs::Validation_FieldIsEmpty, null, array(
+				throw new \CApiValidationException(Errs::Validation_FieldIsEmpty, null, array(
 					'{{ClassName}}' => 'CUser', '{{ClassField}}' => 'Error'));
 		}
 
