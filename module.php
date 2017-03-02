@@ -90,7 +90,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
-		$oAccount = new \CAccount();
+		$oAccount = \CAccount::createInstance($this->GetName());
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->oApiAccountsManager->isExists($oAccount))
 		{
@@ -189,7 +189,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 		
 		if ($mResult instanceOf \CUser)
 		{
-			$oAccount = new \CAccount();
+			$oAccount = \CAccount::createInstance($this->GetName());
 			
 			$oAccount->IdUser = $mResult->EntityId;
 			$oAccount->Login = $sLogin;
