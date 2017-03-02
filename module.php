@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2016, Afterlogic Corp.
+ * @copyright Copyright (c) 2017, Afterlogic Corp.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 	 * Checks if module has account with specified login.
 	 * @ignore
 	 * @param array $aArgs
-	 * @throws \System\Exceptions\AuroraApiException
+	 * @throws \System\Exceptions\ApiException
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
@@ -94,7 +94,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->oApiAccountsManager->isExists($oAccount))
 		{
-			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccountExists);
+			throw new \System\Exceptions\ApiException(\System\Notifications::AccountExists);
 		}
 	}
 	
@@ -160,7 +160,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 	 * @param string $sLogin New account login.
 	 * @param string $sPassword New account password.
 	 * @return bool|array
-	 * @throws \System\Exceptions\AuroraApiException
+	 * @throws \System\Exceptions\ApiException
 	 */
 	public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
 	{
@@ -197,7 +197,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 			
 			if ($this->oApiAccountsManager->isExists($oAccount))
 			{
-				throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccountExists);
+				throw new \System\Exceptions\ApiException(\System\Notifications::AccountExists);
 			}
 			
 			$this->oApiAccountsManager->createAccount($oAccount);
@@ -207,7 +207,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 		}
 		else
 		{
-			throw new \System\Exceptions\AuroraApiException(\System\Notifications::NonUserPassed);
+			throw new \System\Exceptions\ApiException(\System\Notifications::NonUserPassed);
 		}
 		
 		return false;
@@ -218,7 +218,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 	 * 
 	 * @param \CAccount $oAccount
 	 * @return bool
-	 * @throws \System\Exceptions\AuroraApiException
+	 * @throws \System\Exceptions\ApiException
 	 */
 	public function SaveAccount($oAccount)
 	{
@@ -238,7 +238,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 		}
 		else
 		{
-			throw new \System\Exceptions\AuroraApiException(\System\Notifications::UserNotAllowed);
+			throw new \System\Exceptions\ApiException(\System\Notifications::UserNotAllowed);
 		}
 		
 		return false;
@@ -423,7 +423,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 	 * @param string $Login New value of account login.
 	 * @param string $Password New value of account password.
 	 * @return array|bool
-	 * @throws \System\Exceptions\AuroraApiException
+	 * @throws \System\Exceptions\ApiException
 	 */
 	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
 	{
@@ -452,7 +452,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 		}
 		else
 		{
-			throw new \System\Exceptions\AuroraApiException(\System\Notifications::UserNotAllowed);
+			throw new \System\Exceptions\ApiException(\System\Notifications::UserNotAllowed);
 		}
 		
 		return false;
@@ -506,7 +506,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 	 * 
 	 * @param int $AccountId Identifier of account to delete.
 	 * @return bool
-	 * @throws \System\Exceptions\AuroraApiException
+	 * @throws \System\Exceptions\ApiException
 	 */
 	public function DeleteAccount($AccountId = 0)
 	{
@@ -527,7 +527,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 		}
 		else
 		{
-			throw new \System\Exceptions\AuroraApiException(\System\Notifications::UserNotAllowed);
+			throw new \System\Exceptions\ApiException(\System\Notifications::UserNotAllowed);
 		}
 	}
 	
@@ -587,7 +587,7 @@ class StandardAuthModule extends \Aurora\System\AbstractModule
 		$oUser = \Aurora\System\Api::getAuthenticatedUser();
 		if ($oUser->Role === \EUserRole::NormalUser && $oUser->EntityId != $UserId)
 		{
-			throw new \System\Exceptions\AuroraApiException(\System\Notifications::AccessDenied);
+			throw new \System\Exceptions\ApiException(\System\Notifications::AccessDenied);
 		}
 		
 		$aAccounts = array();
