@@ -18,9 +18,9 @@
  * @package Modules
  */
 
-namespace Aurora\Modules;
+namespace Aurora\Modules\StandardAuth;
 
-class StandardAuthModule extends \Aurora\System\Module\AbstractModule
+class Module extends \Aurora\System\Module\AbstractModule
 {
 	public $oApiAccountsManager = null;
 	
