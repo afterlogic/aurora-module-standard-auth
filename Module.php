@@ -184,7 +184,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 			'password' => $sPassword
 		);
 		$this->broadcastEvent(
-			'CreateAccount', 
+			'CreateAccount::before', 
 			$aArgs,
 			$mResult
 		);
