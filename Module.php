@@ -260,9 +260,14 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Creates basic account for specified user.
 	 * 
+	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
+	 * @apiHeaderExample {json} Header-Example:
+	 *	{
+	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
+	 *	}
+	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=CreateUserAccount} Method Method name.
-	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
 	 * &emsp; **UserId** *int* User identifier.<br>
@@ -274,7 +279,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'CreateUserAccount',
-	 *	AuthToken: 'token_value',
 	 *	Parameters: '{ UserId: 123, Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
@@ -320,9 +324,14 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Creates basic account for authenticated user.
 	 * 
+	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
+	 * @apiHeaderExample {json} Header-Example:
+	 *	{
+	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
+	 *	}
+	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=CreateAuthenticatedUserAccount} Method Method name.
-	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
 	 * &emsp; **Login** *string* New account login.<br>
@@ -333,7 +342,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'CreateAuthenticatedUserAccount',
-	 *	AuthToken: 'token_value',
 	 *	Parameters: '{ Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
@@ -379,9 +387,14 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Updates existing basic account.
 	 * 
+	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
+	 * @apiHeaderExample {json} Header-Example:
+	 *	{
+	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
+	 *	}
+	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=UpdateAccount} Method Method name.
-	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
 	 * &emsp; **AccountId** *int* AccountId Identifier of account to update.<br>
@@ -393,7 +406,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'UpdateAccount',
-	 *	AuthToken: 'token_value',
 	 *	Parameters: '{ AccountId: 123, Login: "login_value", Password: "password_value" }'
 	 * }
 	 * 
@@ -467,9 +479,14 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Deletes basic account.
 	 * 
+	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
+	 * @apiHeaderExample {json} Header-Example:
+	 *	{
+	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
+	 *	}
+	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=DeleteAccount} Method Method name.
-	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
 	 * &emsp; **AccountId** *int* Identifier of account to delete.<br>
@@ -479,7 +496,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'DeleteAccount',
-	 *	AuthToken: 'token_value',
 	 *	Parameters: '{ AccountId: 123 }'
 	 * }
 	 * 
@@ -540,9 +556,14 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @apiGroup StandardAuth
 	 * @apiDescription Obtains basic account for specified user.
 	 * 
+	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
+	 * @apiHeaderExample {json} Header-Example:
+	 *	{
+	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
+	 *	}
+	 * 
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=GetUserAccounts} Method Method name.
-	 * @apiParam {string} AuthToken Auth token.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
 	 * &emsp; **UserId** *int* User identifier.<br>
@@ -552,7 +573,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'GetUserAccounts',
-	 *	AuthToken: 'token_value',
 	 *	Parameters: '{ UserId: 123 }'
 	 * }
 	 * 
