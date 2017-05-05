@@ -29,7 +29,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		
 		$this->oApiAccountsManager = $this->GetManager('accounts');
 		
-		$this->subscribeEvent('Login', array($this, 'onLogin'), 1);
+		$this->subscribeEvent('Login', array($this, 'onLogin'), 90);
 		$this->subscribeEvent('Register', array($this, 'onRegister'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
