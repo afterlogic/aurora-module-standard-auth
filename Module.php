@@ -159,7 +159,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
 	{
-		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 		
 		$aArgs = array(
 				'Login' => $sLogin
@@ -217,7 +217,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function SaveAccount($oAccount)
 	{
-		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 		
 //		$oAccount = $this->getDefaultAccountFromParam();
 		
@@ -305,7 +305,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function CreateUserAccount($UserId, $Login, $Password)
 	{
-		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 		
 		return $this->CreateAccount(0, $UserId, $Login, $Password);
 	}
@@ -367,7 +367,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function CreateAuthenticatedUserAccount($Login, $Password)
 	{
-		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 		
 		$iUserId = \Aurora\System\Api::getAuthenticatedUserId();
 		return $this->CreateAccount(0, $iUserId, $Login, $Password);
@@ -434,7 +434,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
 	{
-		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 		
 		if ($AccountId > 0)
 		{
@@ -521,7 +521,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function DeleteAccount($AccountId = 0)
 	{
-		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 		
 		$bResult = false;
 		
@@ -597,10 +597,10 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function GetUserAccounts($UserId)
 	{
-		\Aurora\System\Api::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 		
 		$oUser = \Aurora\System\Api::getAuthenticatedUser();
-		if ($oUser->Role === \EUserRole::NormalUser && $oUser->EntityId != $UserId)
+		if ($oUser->Role === \Aurora\System\Enums\UserRole::NormalUser && $oUser->EntityId != $UserId)
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::AccessDenied);
 		}
