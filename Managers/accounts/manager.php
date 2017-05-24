@@ -8,26 +8,21 @@
  * For full statements of the licenses see LICENSE-AFTERLOGIC and LICENSE-AGPL3 files.
  */
 
-/**
- * CApiAccountsManager class summary
- * 
- * @package Accounts
- */
-class CApiStandardAuthAccountsManager extends \Aurora\System\Managers\AbstractManager
+
+namespace Aurora\Modules\StandardAuth\Managers\Accounts;
+
+class Manager extends \Aurora\System\Managers\AbstractManager
 {
 	/**
 	 * @var \Aurora\System\Managers\Eav\Manager
 	 */
 	public $oEavManager = null;
 	
-	/**
-	 * @param \Aurora\System\Managers\GlobalManager &$oManager
-	 */
-	public function __construct(\Aurora\System\Managers\GlobalManager &$oManager, $sForcedStorage = '', \Aurora\System\Module\AbstractModule $oModule = null)
+	public function __construct($sForcedStorage = '', \Aurora\System\Module\AbstractModule $oModule = null)
 	{
-		parent::__construct('accounts', $oManager, $oModule);
+		parent::__construct('accounts', $oModule);
 		
-		$this->oEavManager = \Aurora\System\Api::GetSystemManager('eav', 'db');
+		$this->oEavManager = new \Aurora\System\Managers\Eav\Manager();
 	}
 
 	/**
@@ -108,11 +103,11 @@ class CApiStandardAuthAccountsManager extends \Aurora\System\Managers\AbstractMa
 	 * @param int $iPage List page.
 	 * @param int $iUsersPerPage Number of users on a single page.
 	 * @param string $sOrderBy = 'email'. Field by which to sort.
-	 * @param int $iOrderType = \ESortOrder::ASC. If **\ESortOrder::ASC** the sort order type is ascending.
+	 * @param int $iOrderType = \Aurora\System\Enums\SortOrder::ASC. If **\Aurora\System\Enums\SortOrder::ASC** the sort order type is ascending.
 	 * @param string $sSearchDesc = ''. If specified, the search goes on by substring in the name and email of default account.
 	 * @return array | false
 	 */
-	public function getAccountList($iPage, $iUsersPerPage, $sOrderBy = 'Login', $iOrderType = \ESortOrder::ASC, $sSearchDesc = '')
+	public function getAccountList($iPage, $iUsersPerPage, $sOrderBy = 'Login', $iOrderType = \Aurora\System\Enums\SortOrder::ASC, $sSearchDesc = '')
 	{
 		$aResult = false;
 		try
