@@ -153,11 +153,11 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 
 	/**
-	 * @param CAccount $oAccount
+	 * @param \CAccount $oAccount
 	 *
 	 * @return bool
 	 */
-	public function isExists(CAccount $oAccount)
+	public function isExists(\CAccount $oAccount)
 	{
 		$bResult = false;
 		try
@@ -183,11 +183,11 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 	
 	/**
-	 * @param CAccount $oAccount
+	 * @param \CAccount $oAccount
 	 *
 	 * @return bool
 	 */
-	public function createAccount (CAccount &$oAccount)
+	public function createAccount (\CAccount &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -219,11 +219,11 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 	
 	/**
-	 * @param CAccount $oAccount
+	 * @param \CAccount $oAccount
 	 *
 	 * @return bool
 	 */
-	public function updateAccount (CAccount &$oAccount)
+	public function updateAccount (\CAccount &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -256,10 +256,10 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	
 	/**
 	 * 
-	 * @param CAccount $oAccount
+	 * @param \CAccount $oAccount
 	 * @return bool
 	 */
-	public function deleteAccount(CAccount $oAccount)
+	public function deleteAccount(\CAccount $oAccount)
 	{
 		$bResult = false;
 		try
