@@ -219,10 +219,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 		
-//		$oAccount = $this->getDefaultAccountFromParam();
-		
-//		if ($this->oApiCapabilityManager->isPersonalContactsSupported($oAccount))
-		
 		if ($oAccount instanceof \CAccount)
 		{
 			$this->oApiAccountsManager->createAccount($oAccount);
