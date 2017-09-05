@@ -8,12 +8,14 @@
  * For full statements of the licenses see LICENSE-AFTERLOGIC and LICENSE-AGPL3 files.
  */
 
+namespace Aurora\Modules\StandardAuth\Classes;
+
 /**
  *
  * @package Classes
  * @subpackage Users
  */
-class CAccount extends \Aurora\System\EAV\Entity
+class Account extends \Aurora\System\EAV\Entity
 {
 	/**
 	 * Creates a new instance of the object.

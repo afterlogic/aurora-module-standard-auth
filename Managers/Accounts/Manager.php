@@ -72,7 +72,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		try
 		{
 			$aResults = $this->oEavManager->getEntities(
-				'CAccount', 
+				'\\Aurora\\Modules\\StandardAuth\\Classes\\Account', 
 				array(
 					'IsDisabled', 'Login', 'Password', 'IdUser'
 				),
@@ -120,7 +120,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			}
 				
 			$aResults = $this->oEavManager->getEntities(
-				'CAccount', 
+				'\\Aurora\\Modules\\StandardAuth\\Classes\\Account', 
 				array(
 					'IsDisabled', 'Login', 'Password', 'IdUser'
 				),
@@ -153,17 +153,17 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 
 	/**
-	 * @param \CAccount $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
 	 *
 	 * @return bool
 	 */
-	public function isExists(\CAccount $oAccount)
+	public function isExists(\Aurora\Modules\StandardAuth\Classes\Account $oAccount)
 	{
 		$bResult = false;
 		try
 		{
 			$aResults = $this->oEavManager->getEntities(
-				'CAccount',
+				'\\Aurora\Modules\\StandardAuth\\Classes\\Account',
 				array('Login'),
 				0,
 				0,
@@ -183,11 +183,11 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 	
 	/**
-	 * @param \CAccount $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
 	 *
 	 * @return bool
 	 */
-	public function createAccount (\CAccount &$oAccount)
+	public function createAccount (\Aurora\Modules\StandardAuth\Classes\Account &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -219,11 +219,11 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 	
 	/**
-	 * @param \CAccount $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
 	 *
 	 * @return bool
 	 */
-	public function updateAccount (\CAccount &$oAccount)
+	public function updateAccount (\Aurora\Modules\StandardAuth\Classes\Account &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -256,10 +256,10 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	
 	/**
 	 * 
-	 * @param \CAccount $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
 	 * @return bool
 	 */
-	public function deleteAccount(\CAccount $oAccount)
+	public function deleteAccount(\Aurora\Modules\StandardAuth\Classes\Account $oAccount)
 	{
 		$bResult = false;
 		try
@@ -294,7 +294,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 				$aFields[] = 'Password';
 			}
 			$mResult = $this->oEavManager->getEntities(
-				'CAccount',
+				'\\Aurora\\Modules\\StandardAuth\\Classes\\Account',
 				$aFields,
 				0,
 				0,

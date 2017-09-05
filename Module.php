@@ -85,7 +85,10 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
-		$oAccount = \Aurora\System\EAV\Entity::createInstance('CAccount', $this->GetName());
+		$oAccount = \Aurora\System\EAV\Entity::createInstance(
+				'\\Aurora\\Modules\\StandardAuth\\Classes\\Account', 
+				$this->GetName()
+		);
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->oApiAccountsManager->isExists($oAccount))
 		{
@@ -184,7 +187,10 @@ class Module extends \Aurora\System\Module\AbstractModule
 		
 		if ($mResult instanceOf \CUser)
 		{
-			$oAccount = \Aurora\System\EAV\Entity::createInstance('CAccount', $this->GetName());
+			$oAccount = \Aurora\System\EAV\Entity::createInstance(
+					'\\Aurora\\Modules\\StandardAuth\\Classes\\Account', 
+					$this->GetName()
+			);
 			
 			$oAccount->IdUser = $mResult->EntityId;
 			$oAccount->Login = $sLogin;
@@ -211,7 +217,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	/**
 	 * Updates account.
 	 * 
-	 * @param \CAccount $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
 	 * @return bool
 	 * @throws \Aurora\System\Exceptions\ApiException
 	 */
@@ -219,7 +225,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 		
-		if ($oAccount instanceof \CAccount)
+		if ($oAccount instanceof \Aurora\Modules\StandardAuth\Classes\Account)
 		{
 			$this->oApiAccountsManager->createAccount($oAccount);
 			
