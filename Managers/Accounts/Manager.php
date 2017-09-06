@@ -64,7 +64,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	 * 
 	 * @param int $iUserId User identifier.
 	 * 
-	 * @return CUser | false
+	 * @return User | false
 	 */
 	public function getAccountByCredentials($sLogin, $sPassword)
 	{

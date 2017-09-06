@@ -45,7 +45,7 @@ class Account extends \Aurora\System\EAV\Entity
 		{
 			case false:
 				throw new \Aurora\System\Exceptions\ValidationException(Errs::Validation_FieldIsEmpty, null, array(
-					'{{ClassName}}' => '\Aurora\Modules\Core\Clases\CUser', '{{ClassField}}' => 'Error'));
+					'{{ClassName}}' => 'Aurora\Modules\Core\Classes\User', '{{ClassField}}' => 'Error'));
 		}
 
 		return true;

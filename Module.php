@@ -185,7 +185,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 			$mResult
 		);
 		
-		if ($mResult instanceOf \CUser)
+		if ($mResult instanceOf \Aurora\Modules\Core\Classes\User)
 		{
 			$oAccount = \Aurora\System\EAV\Entity::createInstance(
 					'\\Aurora\\Modules\\StandardAuth\\Classes\\Account', 
