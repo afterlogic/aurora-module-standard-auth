@@ -25,8 +25,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function init()
 	{
-		$this->incClass('account');
-		
 		$this->oApiAccountsManager = new \Aurora\Modules\StandardAuth\Managers\Accounts\Manager('', $this);
 		
 		$this->subscribeEvent('Login', array($this, 'onLogin'), 90);
@@ -86,7 +84,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function onCheckAccountExists($aArgs)
 	{
 		$oAccount = \Aurora\System\EAV\Entity::createInstance(
-				__NAMESPACE__ . '\Classes\Account',
+				__NAMESPACE__ . '\Classes\Account', 
 				$this->GetName()
 		);
 		$oAccount->Login = $aArgs['Login'];
@@ -188,7 +186,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		if ($mResult instanceOf \Aurora\Modules\Core\Classes\User)
 		{
 			$oAccount = \Aurora\System\EAV\Entity::createInstance(
-					__NAMESPACE__ .  '\Classes\Account',
+					__NAMESPACE__ . '\Classes\Account', 
 					$this->GetName()
 			);
 			
@@ -225,7 +223,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 		
-		if ($oAccount instanceof \Aurora\Modules\StandardAuth\Classes\Account)
+		if ($oAccount instanceof Classes\Account)
 		{
 			$this->oApiAccountsManager->createAccount($oAccount);
 			
