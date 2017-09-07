@@ -25,7 +25,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function init()
 	{
-		$this->oApiAccountsManager = new \Aurora\Modules\StandardAuth\Managers\Accounts\Manager('', $this);
+		$this->oApiAccountsManager = new Managers\Accounts\Manager($this);
 		
 		$this->subscribeEvent('Login', array($this, 'onLogin'), 90);
 		$this->subscribeEvent('Register', array($this, 'onRegister'));
