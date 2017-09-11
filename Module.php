@@ -84,7 +84,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function onCheckAccountExists($aArgs)
 	{
 		$oAccount = \Aurora\System\EAV\Entity::createInstance(
-				__NAMESPACE__ . '\Classes\Account', 
+				$this->getNamespace() . '\Classes\Account',
 				$this->GetName()
 		);
 		$oAccount->Login = $aArgs['Login'];
@@ -186,7 +186,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		if ($mResult instanceOf \Aurora\Modules\Core\Classes\User)
 		{
 			$oAccount = \Aurora\System\EAV\Entity::createInstance(
-					__NAMESPACE__ . '\Classes\Account', 
+					$this->getNamespace() . '\Classes\Account',
 					$this->GetName()
 			);
 			

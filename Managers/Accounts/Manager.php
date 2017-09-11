@@ -72,7 +72,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		try
 		{
 			$aResults = $this->oEavManager->getEntities(
-				'Aurora\Modules\StandardAuth\Classes\Account', 
+				$this->getModule()->getNamespace() . '\Classes\Account',
 				array(
 					'IsDisabled', 'Login', 'Password', 'IdUser'
 				),
@@ -120,7 +120,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			}
 				
 			$aResults = $this->oEavManager->getEntities(
-				'Aurora\Modules\StandardAuth\Classes\Account', 
+				$this->getModule()->getNamespace() . '\Classes\Account',
 				array(
 					'IsDisabled', 'Login', 'Password', 'IdUser'
 				),
@@ -163,7 +163,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		try
 		{
 			$aResults = $this->oEavManager->getEntities(
-				'Aurora\Modules\StandardAuth\Classes\Account',
+				$this->getModule()->getNamespace() . '\Classes\Account',
 				array('Login'),
 				0,
 				0,
@@ -294,7 +294,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 				$aFields[] = 'Password';
 			}
 			$mResult = $this->oEavManager->getEntities(
-				'Aurora\Modules\StandardAuth\Classes\Account',
+				$this->getModule()->getNamespace() . '\Classes\Account',
 				$aFields,
 				0,
 				0,
