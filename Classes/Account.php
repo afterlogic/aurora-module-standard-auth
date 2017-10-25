@@ -25,10 +25,10 @@ class Account extends \Aurora\System\EAV\Entity
 	public function __construct($sModule)
 	{
 		$this->aStaticMap = array(
-			'IsDisabled'	=> array('bool', false),
-			'IdUser'		=> array('int', 0),
-			'Login'			=> array('string', ''),
-			'Password'		=> array('encrypted', ''),
+			'IsDisabled'	=> array('bool', false, true),
+			'IdUser'		=> array('int', 0, true),
+			'Login'			=> array('string', '', true),
+			'Password'		=> array('encrypted', '', true),
 			'LastModified'  => array('datetime', date('Y-m-d H:i:s'))
 		);
 		parent::__construct($sModule);
