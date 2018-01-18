@@ -163,34 +163,45 @@ class Module extends \Aurora\System\Module\AbstractModule
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 		
 		$aArgs = array(
-				'Login' => $sLogin
+			'Login' => $sLogin
 		);
 		$this->broadcastEvent(
 			'CheckAccountExists', 
 			$aArgs
 		);
 		
-		$mResult = null;
-		$aArgs = array(
-			'TenantId' => $iTenantId,
-			'UserId' => $iUserId,
-			'login' => $sLogin,
-			'password' => $sPassword
-		);
-		$this->broadcastEvent(
-			'CreateAccount::before', 
-			$aArgs,
-			$mResult
-		);
+		$sPublicId = (string)$sLogin;
 		
-		if ($mResult instanceOf \Aurora\Modules\Core\Classes\User)
+		\Aurora\System\Api::skipCheckUserRole(true);
+		$oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserByPublicId($sPublicId);
+		if (empty($oUser))
+		{
+			$iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
+			$oUser =\Aurora\Modules\Core\Module::Decorator()->GetUser($iUserId);
+		}
+		\Aurora\System\Api::skipCheckUserRole(false);
+		
+//		$mResult = null;
+//		$aArgs = array(
+//			'TenantId' => $iTenantId,
+//			'UserId' => $iUserId,
+//			'login' => $sLogin,
+//			'password' => $sPassword
+//		);
+//		$this->broadcastEvent(
+//			'CreateAccount', 
+//			$aArgs,
+//			$mResult
+//		);
+		
+		if ($oUser instanceOf \Aurora\Modules\Core\Classes\User)
 		{
 			$oAccount = \Aurora\System\EAV\Entity::createInstance(
 					$this->getNamespace() . '\Classes\Account',
 					$this->GetName()
 			);
 			
-			$oAccount->IdUser = $mResult->EntityId;
+			$oAccount->IdUser = $oUser->EntityId;
 			$oAccount->Login = $sLogin;
 			$oAccount->Password = $sPassword;
 			
