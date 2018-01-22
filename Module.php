@@ -172,14 +172,23 @@ class Module extends \Aurora\System\Module\AbstractModule
 		
 		$sPublicId = (string)$sLogin;
 		
-		\Aurora\System\Api::skipCheckUserRole(true);
-		$oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserByPublicId($sPublicId);
-		if (empty($oUser))
+		$oCoreDecorator = \Aurora\Modules\Core\Module::Decorator();
+		if ($iUserId > 0)
 		{
-			$iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
-			$oUser =\Aurora\Modules\Core\Module::Decorator()->GetUser($iUserId);
+			$oUser = $oCoreDecorator->GetUser($iUserId);
 		}
-		\Aurora\System\Api::skipCheckUserRole(false);
+		else
+		{
+			\Aurora\System\Api::skipCheckUserRole(true);
+			$oUser = $oCoreDecorator->GetUserByPublicId($sPublicId);
+			
+			if (empty($oUser))
+			{
+				$iUserId = $oCoreDecorator->CreateUser($iTenantId, $sPublicId);
+				$oUser = $oCoreDecorator->GetUser($iUserId);
+			}
+			\Aurora\System\Api::skipCheckUserRole(false);
+		}
 		
 //		$mResult = null;
 //		$aArgs = array(
