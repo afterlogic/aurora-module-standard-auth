@@ -32,6 +32,8 @@ class Module extends \Aurora\System\Module\AbstractModule
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
 		$this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
+		
+		$this->denyMethodCallByWebApi('CreateAccount');
 	}
 	
 	/**
@@ -170,15 +172,15 @@ class Module extends \Aurora\System\Module\AbstractModule
 			$aArgs
 		);
 		
-		$sPublicId = (string)$sLogin;
-		
 		$oCoreDecorator = \Aurora\Modules\Core\Module::Decorator();
+		
 		if ($iUserId > 0)
 		{
 			$oUser = $oCoreDecorator->GetUser($iUserId);
 		}
 		else
 		{
+			$sPublicId = (string)$sLogin;
 			\Aurora\System\Api::skipCheckUserRole(true);
 			$oUser = $oCoreDecorator->GetUserByPublicId($sPublicId);
 			
