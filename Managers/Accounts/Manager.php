@@ -39,10 +39,8 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			if (is_numeric($iAccountId))
 			{
 				$iAccountId = (int) $iAccountId;
-				if (null === $oAccount)
-				{
-					$oAccount = $this->oEavManager->getEntity($iAccountId);
-				}
+				
+				$oAccount = $this->oEavManager->getEntity($iAccountId, '\Aurora\Modules\StandardAuth\Classes\Account');
 			}
 			else
 			{
