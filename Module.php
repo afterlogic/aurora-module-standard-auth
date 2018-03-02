@@ -113,7 +113,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		{
 			foreach($mResult as $oItem)
 			{
-				$this->DeleteAccount($oItem->EntityId);
+				self::Decorator()->DeleteAccount($oItem->EntityId);
 			}
 		}
 	}
@@ -502,7 +502,9 @@ class Module extends \Aurora\System\Module\AbstractModule
 		{
 			$oAccount = $this->oApiAccountsManager->getAccountById($AccountId);
 			
-			if (!empty($oAccount) && ($oAccount->IdUser === $oUser->EntityId || $oUser->Role === \Aurora\System\Enums\UserRole::TenantAdmin))
+			if (!empty($oAccount) && ($oAccount->IdUser === $oUser->EntityId || 
+					$oUser->Role === \Aurora\System\Enums\UserRole::SuperAdmin ||
+					$oUser->Role === \Aurora\System\Enums\UserRole::TenantAdmin))
 			{
 				$bResult = $this->oApiAccountsManager->deleteAccount($oAccount);
 			}
