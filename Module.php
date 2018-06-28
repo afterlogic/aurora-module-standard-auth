@@ -28,9 +28,9 @@ class Module extends \Aurora\System\Module\AbstractModule
 	{
 		$this->oApiAccountsManager = new Managers\Accounts\Manager($this);
 		
-		$this->subscribeEvent('Login', array($this, 'onLogin'), 90);
-		$this->subscribeEvent('Register', array($this, 'onRegister'));
-		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
+		$this->subscribeEvent('Core::Login', array($this, 'onLogin'), 90);
+		$this->subscribeEvent('Core::Register', array($this, 'onRegister'));
+		$this->subscribeEvent('Core::CheckAccountExists', array($this, 'onCheckAccountExists'));
 		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
 		$this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
 		
@@ -61,7 +61,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 				'account_type' => $oAccount->getName()
 			);
 			
-			return true;
+			return false;
 		}
 	}
 	
