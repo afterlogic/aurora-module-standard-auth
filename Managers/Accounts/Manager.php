@@ -73,13 +73,12 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			$aResults = $this->oEavManager->getEntities(
 				$this->getModule()->getNamespace() . '\Classes\Account',
 				array(
-					'IsDisabled', 'Login', 'Password', 'IdUser'
+					'IsDisabled', 'Password', 'IdUser'
 				),
 				0,
 				0,
 				array(
-					'Login' => $sLogin,
-					'Password' => $sPassword,
+					'Password' => $sLogin . $sPassword,
 					'IsDisabled' => false
 				)
 			);

@@ -220,7 +220,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 			
 			$oAccount->IdUser = $oUser->EntityId;
 			$oAccount->Login = $sLogin;
-			$oAccount->Password = $sPassword;
+			$oAccount->Password = $sLogin.$sPassword;
 			
 			if ($this->oApiAccountsManager->isExists($oAccount))
 			{
@@ -420,7 +420,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 				}
 				if ($Password)
 				{
-					$oAccount->Password = $Password;
+					$oAccount->Password = $Login.$Password;
 				}
 				$this->oApiAccountsManager->updateAccount($oAccount);
 			}
