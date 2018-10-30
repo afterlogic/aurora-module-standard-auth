@@ -402,7 +402,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @return array|bool
 	 * @throws \Aurora\System\Exceptions\ApiException
 	 */
-	public function UpdateAccount($AccountId = 0, $Login = '', $Password = '')
+	public function UpdateAccount($AccountId = 0, $Password = '')
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 		
@@ -412,15 +412,15 @@ class Module extends \Aurora\System\Module\AbstractModule
 		{
 			$oAccount = $this->oApiAccountsManager->getAccountById($AccountId);
 
-			if (!empty($oAccount) && ($oAccount->IdUser === $oUser->EntityId || $oUser->Role === \Aurora\System\Enums\UserRole::TenantAdmin))
+			if (!empty($oAccount))
 			{
-				if ($Login)
+				if ($oAccount->IdUser !== $oUser->EntityId)
 				{
-					$oAccount->Login = $Login;
+					\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::TenantAdmin);
 				}
 				if ($Password)
 				{
-					$oAccount->Password = $Login.$Password;
+					$oAccount->Password = $oAccount->Login.$Password;
 				}
 				$this->oApiAccountsManager->updateAccount($oAccount);
 			}
