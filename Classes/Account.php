@@ -15,7 +15,7 @@ namespace Aurora\Modules\StandardAuth\Classes;
  * @package Classes
  * @subpackage Users
  */
-class Account extends \Aurora\System\EAV\Entity
+class Account extends \Aurora\System\Classes\AbstractAccount
 {
 	/**
 	 * Creates a new instance of the object.
@@ -49,5 +49,10 @@ class Account extends \Aurora\System\EAV\Entity
 		}
 
 		return true;
+	}
+
+	public function getLogin()
+	{
+		return $this->Login;
 	}
 }
