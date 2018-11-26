@@ -18,6 +18,16 @@ class Module extends \Aurora\System\Module\AbstractModule
 {
 	public $oApiAccountsManager = null;
 	
+	public function getAccountsManager()
+	{
+		if ($this->oApiAccountsManager === null)
+		{
+			$this->oApiAccountsManager = new Managers\Accounts\Manager($this);
+		}
+
+		return $this->oApiAccountsManager;
+	}
+
 	/***** private functions *****/
 	/**
 	 * Initializes module.
@@ -26,8 +36,6 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function init()
 	{
-		$this->oApiAccountsManager = new Managers\Accounts\Manager($this);
-		
 		$this->subscribeEvent('Login', array($this, 'onLogin'), 90);
 		$this->subscribeEvent('Register', array($this, 'onRegister'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
@@ -46,7 +54,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onLogin($aArgs, &$mResult)
 	{
-		$oAccount = $this->oApiAccountsManager->getAccountByCredentials(
+		$oAccount = $this->getAccountsManager()->getAccountByCredentials(
 			$aArgs['Login'], 
 			$aArgs['Password']
 		);
@@ -91,7 +99,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	{
 		$oAccount = Classes\Account(self::GetName());
 		$oAccount->Login = $aArgs['Login'];
-		if ($this->oApiAccountsManager->isExists($oAccount))
+		if ($this->getAccountsManager()->isExists($oAccount))
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::AccountExists);
 		}
@@ -105,7 +113,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onAfterDeleteUser($aArgs, &$iUserId)
 	{
-		$mResult = $this->oApiAccountsManager->getUserAccounts($iUserId);
+		$mResult = $this->getAccountsManager()->getUserAccounts($iUserId);
 		
 		if (\is_array($mResult))
 		{
@@ -127,7 +135,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		$aUserInfo = \Aurora\System\Api::getAuthenticatedUserInfo($aArgs['AuthToken']);
 		if (isset($aUserInfo['userId']))
 		{
-			$mResult = $this->oApiAccountsManager->getUserAccounts($aUserInfo['userId'], $bWithPassword);
+			$mResult = $this->getAccountsManager()->getUserAccounts($aUserInfo['userId'], $bWithPassword);
 			if (\is_array($mResult))
 			{
 				foreach($mResult as $oItem)
@@ -216,12 +224,12 @@ class Module extends \Aurora\System\Module\AbstractModule
 			$oAccount->Login = $sLogin;
 			$oAccount->Password = $sLogin.$sPassword;
 			
-			if ($this->oApiAccountsManager->isExists($oAccount))
+			if ($this->getAccountsManager()->isExists($oAccount))
 			{
 				throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::AccountExists);
 			}
 			
-			$this->oApiAccountsManager->createAccount($oAccount);
+			$this->getAccountsManager()->createAccount($oAccount);
 			return $oAccount ? array(
 				'EntityId' => $oAccount->EntityId
 			) : false;
@@ -246,7 +254,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		
 		if ($oAccount instanceof Classes\Account)
 		{
-			$this->oApiAccountsManager->createAccount($oAccount);
+			$this->getAccountsManager()->createAccount($oAccount);
 			
 			return $oAccount ? array(
 				'EntityId' => $oAccount->EntityId
@@ -404,7 +412,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		
 		if ($AccountId > 0)
 		{
-			$oAccount = $this->oApiAccountsManager->getAccountById($AccountId);
+			$oAccount = $this->getAccountsManager()->getAccountById($AccountId);
 
 			if (!empty($oAccount))
 			{
@@ -416,7 +424,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 				{
 					$oAccount->Password = $oAccount->Login.$Password;
 				}
-				$this->oApiAccountsManager->updateAccount($oAccount);
+				$this->getAccountsManager()->updateAccount($oAccount);
 			}
 			
 			return $oAccount ? array(
@@ -495,13 +503,13 @@ class Module extends \Aurora\System\Module\AbstractModule
 		
 		if ($AccountId > 0)
 		{
-			$oAccount = $this->oApiAccountsManager->getAccountById($AccountId);
+			$oAccount = $this->getAccountsManager()->getAccountById($AccountId);
 			
 			if (!empty($oAccount) && ($oAccount->IdUser === $oUser->EntityId || 
 					$oUser->Role === \Aurora\System\Enums\UserRole::SuperAdmin ||
 					$oUser->Role === \Aurora\System\Enums\UserRole::TenantAdmin))
 			{
-				$bResult = $this->oApiAccountsManager->deleteAccount($oAccount);
+				$bResult = $this->getAccountsManager()->deleteAccount($oAccount);
 			}
 			
 			return $bResult;
@@ -576,7 +584,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		}
 		
 		$aAccounts = array();
-		$mResult = $this->oApiAccountsManager->getUserAccounts($UserId);
+		$mResult = $this->getAccountsManager()->getUserAccounts($UserId);
 		if (\is_array($mResult))
 		{
 			foreach($mResult as $oItem)
