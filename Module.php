@@ -97,7 +97,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
-		$oAccount = Classes\Account(self::GetName());
+		$oAccount = new Classes\Account(self::GetName());
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->getAccountsManager()->isExists($oAccount))
 		{
