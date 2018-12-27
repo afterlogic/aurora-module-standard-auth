@@ -39,7 +39,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		$this->subscribeEvent('Login', array($this, 'onLogin'), 90);
 		$this->subscribeEvent('Register', array($this, 'onRegister'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
-		$this->subscribeEvent('Core::AfterDeleteUser', array($this, 'onAfterDeleteUser'));
+		$this->subscribeEvent('Core::DeleteUser::before', array($this, 'onBeforeDeleteUser'));
 		$this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
 		
 		$this->denyMethodCallByWebApi('CreateAccount');
@@ -111,7 +111,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @param array $aArgs
 	 * @param int $iUserId User identifier.
 	 */
-	public function onAfterDeleteUser($aArgs, &$iUserId)
+	public function onBeforeDeleteUser($aArgs, &$iUserId)
 	{
 		$mResult = $this->getAccountsManager()->getUserAccounts($iUserId);
 		
