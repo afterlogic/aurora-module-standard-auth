@@ -109,11 +109,11 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * Deletes all basic accounts which are owened by the specified user.
 	 * @ignore
 	 * @param array $aArgs
-	 * @param int $iUserId User identifier.
+	 * @param mixed $mResult.
 	 */
-	public function onBeforeDeleteUser($aArgs, &$iUserId)
+	public function onBeforeDeleteUser($aArgs, $mResult)
 	{
-		$mResult = $this->getAccountsManager()->getUserAccounts($iUserId);
+		$mResult = $this->getAccountsManager()->getUserAccounts($aArgs['UserId']);
 		
 		if (\is_array($mResult))
 		{
