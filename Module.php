@@ -580,7 +580,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 		
 		$oUser = \Aurora\System\Api::getAuthenticatedUser();
-		if ($oUser->Role === \Aurora\System\Enums\UserRole::NormalUser && $oUser->EntityId != $UserId)
+		if ($oUser->isNormalOrTenant() && $oUser->EntityId != $UserId)
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::AccessDenied);
 		}
