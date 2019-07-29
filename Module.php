@@ -108,7 +108,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	}
 	
 	/**
-	 * Deletes all basic accounts which are owened by the specified user.
+	 * Deletes all basic accounts which are owned by the specified user.
 	 * @ignore
 	 * @param array $aArgs
 	 * @param mixed $mResult.
@@ -164,7 +164,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	/***** public functions *****/
 	/**
 	 * Creates account with credentials.
-	 * Denied for webapi call
+	 * Denied for web API call
 	 * 
 	 * @param int $iTenantId Tenant identifier.
 	 * @param int $iUserId User identifier.
@@ -185,22 +185,20 @@ class Module extends \Aurora\System\Module\AbstractModule
 			$aArgs
 		);
 		
-		$oCoreDecorator = \Aurora\Modules\Core\Module::Decorator();
-		
 		if ($iUserId > 0)
 		{
-			$oUser = $oCoreDecorator->GetUser($iUserId);
+			$oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserUnchecked($iUserId);
 		}
 		else
 		{
 			$sPublicId = (string)$sLogin;
 			$bPrevState = \Aurora\System\Api::skipCheckUserRole(true);
-			$oUser = $oCoreDecorator->GetUserByPublicId($sPublicId);
+			$oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserByPublicId($sPublicId);
 			
 			if (empty($oUser))
 			{
-				$iUserId = $oCoreDecorator->CreateUser($iTenantId, $sPublicId);
-				$oUser = $oCoreDecorator->GetUser($iUserId);
+				$iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
+				$oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserUnchecked($iUserId);
 			}
 			\Aurora\System\Api::skipCheckUserRole($bPrevState);
 		}
