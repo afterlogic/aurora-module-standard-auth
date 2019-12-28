@@ -70,19 +70,14 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$oAccount = null;
 		try
 		{
-			$aResults = $this->oEavManager->getEntities(
-				\Aurora\Modules\StandardAuth\Classes\Account::class,
-				array(
-					'IsDisabled', 'Password', 'IdUser'
-				),
-				0,
-				0,
-				array(
+			$aResults = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
+				->select(['IsDisabled', 'Password', 'IdUser'])
+				->where([
 					'Password' => $sLogin . $sPassword,
 					'IsDisabled' => false
-				)
-			);
-			
+				])
+				->exec();
+
 			if (is_array($aResults) && count($aResults) === 1)
 			{
 				$oAccount = $aResults[0];
@@ -116,18 +111,15 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			{
 				$aFilters['Login'] = '%'.$sSearchDesc.'%';
 			}
-				
-			$aResults = $this->oEavManager->getEntities(
-				\Aurora\Modules\StandardAuth\Classes\Account::class,
-				array(
-					'IsDisabled', 'Login', 'Password', 'IdUser'
-				),
-				$iPage,
-				$iUsersPerPage,
-				$aFilters,
-				$sOrderBy,
-				$iOrderType
-			);
+
+			$aResults = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
+				->select(['IsDisabled', 'Login', 'Password', 'IdUser'])
+				->where($aFilters)
+				->limit($iUsersPerPage)
+				->offset($iPage)
+				->orderBy($sOrderBy)
+				->sortOrder($iOrderType)
+				->exec();
 
 			if (is_array($aResults))
 			{
@@ -160,13 +152,10 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$bResult = false;
 		try
 		{
-			$aResults = $this->oEavManager->getEntities(
-				\Aurora\Modules\StandardAuth\Classes\Account::class,
-				array('Login'),
-				0,
-				0,
-				array('Login' => $oAccount->Login)
-			);
+			$aResults = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
+				->select(['Login'])
+				->where(['Login' => $oAccount->Login])
+				->exec();			
 
 			if (is_array($aResults) && count($aResults) > 0)
 			{
@@ -284,20 +273,18 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$mResult = false;
 		try
 		{
-			$aFields = array(
+			$aFields = [
 				'Login'
-			);
+			];
 			if ($bWithPassword)
 			{
 				$aFields[] = 'Password';
 			}
-			$mResult = $this->oEavManager->getEntities(
-				\Aurora\Modules\StandardAuth\Classes\Account::class,
-				$aFields,
-				0,
-				0,
-				array('IdUser' => $iUserId, 'IsDisabled' => false)
-			);
+			
+			$mResult = (new \Aurora\System\EAV\Query(\Aurora\Modules\Core\Classes\User::class))
+				->select($aFields)
+				->where(['IdUser' => $iUserId, 'IsDisabled' => false])
+				->exec();
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{
