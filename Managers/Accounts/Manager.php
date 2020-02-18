@@ -281,7 +281,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 				$aFields[] = 'Password';
 			}
 			
-			$mResult = (new \Aurora\System\EAV\Query(\Aurora\Modules\Core\Classes\User::class))
+			$mResult = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
 				->select($aFields)
 				->where(['IdUser' => $iUserId, 'IsDisabled' => false])
 				->exec();

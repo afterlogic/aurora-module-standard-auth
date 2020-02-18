@@ -108,11 +108,10 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onBeforeDeleteUser($aArgs, $mResult)
 	{
-		$mResult = $this->getAccountsManager()->getUserAccounts($aArgs['UserId']);
-		
-		if (\is_array($mResult))
+		$mAccounts = $this->getAccountsManager()->getUserAccounts($aArgs['UserId']);
+		if (\is_array($mAccounts))
 		{
-			foreach($mResult as $oItem)
+			foreach($mAccounts as $oItem)
 			{
 				self::Decorator()->DeleteAccount($oItem->EntityId);
 			}
