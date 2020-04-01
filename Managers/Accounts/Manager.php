@@ -73,8 +73,10 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			$aResults = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
 				->select(['IsDisabled', 'Password', 'IdUser'])
 				->where([
-					'Password' => $sLogin . $sPassword,
-					'IsDisabled' => false
+					'$AND' => [
+						'Password' => $sLogin . $sPassword,
+						'IsDisabled' => false
+					]
 				])
 				->exec();
 
@@ -283,7 +285,12 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			
 			$mResult = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
 				->select($aFields)
-				->where(['IdUser' => $iUserId, 'IsDisabled' => false])
+				->where([
+					'$AND' => [
+						'IdUser' => $iUserId, 
+						'IsDisabled' => false
+					]
+				])
 				->exec();
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
