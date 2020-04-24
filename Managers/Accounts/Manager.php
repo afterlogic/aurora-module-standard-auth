@@ -253,7 +253,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$bResult = false;
 		try
 		{
-			$bResult = $this->oEavManager->deleteEntity($oAccount->EntityId);
+			$bResult = $this->oEavManager->deleteEntity($oAccount->EntityId, \Aurora\Modules\StandardAuth\Classes\Account::class);
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{
