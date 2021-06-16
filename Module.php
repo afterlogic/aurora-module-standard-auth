@@ -9,7 +9,7 @@ namespace Aurora\Modules\StandardAuth;
 
 /**
  * This module provides API for authentication by login/password that relies on database.
- * 
+ *
  * @license https://www.gnu.org/licenses/agpl-3.0.html AGPL-3.0
  * @license https://afterlogic.com/products/common-licensing Afterlogic Software License
  * @copyright Copyright (c) 2019, Afterlogic Corp.
@@ -19,7 +19,7 @@ namespace Aurora\Modules\StandardAuth;
 class Module extends \Aurora\System\Module\AbstractModule
 {
 	public $oApiAccountsManager = null;
-	
+
 	public function getAccountsManager()
 	{
 		if ($this->oApiAccountsManager === null)
@@ -33,7 +33,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	/***** private functions *****/
 	/**
 	 * Initializes module.
-	 * 
+	 *
 	 * @ignore
 	 */
 	public function init()
@@ -43,11 +43,11 @@ class Module extends \Aurora\System\Module\AbstractModule
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
 		$this->subscribeEvent('Core::DeleteUser::before', array($this, 'onBeforeDeleteUser'));
 		$this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
-		
+
 		$this->denyMethodCallByWebApi('CreateAccount');
 		$this->denyMethodCallByWebApi('SaveAccount');
 	}
-	
+
 	/**
 	 * Tries to log in with specified credentials via StandardAuth module. Writes to $mResult array with auth token data if logging in was successfull.
 	 * @ignore
@@ -57,17 +57,17 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function onLogin($aArgs, &$mResult)
 	{
 		$oAccount = $this->getAccountsManager()->getAccountByCredentials(
-			$aArgs['Login'], 
+			$aArgs['Login'],
 			$aArgs['Password']
 		);
-		
+
 		if ($oAccount)
 		{
 			$mResult = \Aurora\System\UserSession::getTokenData($oAccount, $aArgs['SignMe']);
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Creates account with specified credentials.
 	 * @ignore
@@ -78,12 +78,12 @@ class Module extends \Aurora\System\Module\AbstractModule
 	{
 		$mResult = $this->CreateAccount(
 			0,
-			$aArgs['UserId'], 
-			$aArgs['Login'], 
+			$aArgs['UserId'],
+			$aArgs['Login'],
 			$aArgs['Password']
 		);
 	}
-	
+
 	/**
 	 * Checks if module has account with specified login.
 	 * @ignore
@@ -92,14 +92,14 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
-		$oAccount = new Classes\Account(self::GetName());
+		$oAccount = new Models\Account();
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->getAccountsManager()->isExists($oAccount))
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::AccountExists);
 		}
 	}
-	
+
 	/**
 	 * Deletes all basic accounts which are owned by the specified user.
 	 * @ignore
@@ -113,13 +113,13 @@ class Module extends \Aurora\System\Module\AbstractModule
 		{
 			foreach($mAccounts as $oItem)
 			{
-				self::Decorator()->DeleteAccount($oItem->EntityId);
+				self::Decorator()->DeleteAccount($oItem->Id);
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param array $aArgs
 	 * @param array $aResult
 	 */
@@ -137,8 +137,8 @@ class Module extends \Aurora\System\Module\AbstractModule
 					$aItem = array(
 						'Type' => $oItem->getName(),
 						'Module' => $oItem->getModule(),
-						'Id' => $oItem->EntityId,
-						'UUID' => $oItem->UUID,
+						'Id' => $oItem->Id,
+						'UUID' => '', //$oItem->UUID, TODO:
 						'Login' => $oItem->Login
 					);
 					if ($bWithPassword)
@@ -152,12 +152,12 @@ class Module extends \Aurora\System\Module\AbstractModule
 	}
 
 	/***** private functions *****/
-	
+
 	/***** public functions *****/
 	/**
 	 * Creates account with credentials.
 	 * Denied for web API call
-	 * 
+	 *
 	 * @param int $iTenantId Tenant identifier.
 	 * @param int $iUserId User identifier.
 	 * @param string $sLogin New account login.
@@ -168,15 +168,15 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
-		
+
 		$aArgs = array(
 			'Login' => $sLogin
 		);
 		$this->broadcastEvent(
-			'CheckAccountExists', 
+			'CheckAccountExists',
 			$aArgs
 		);
-		
+
 		if ($iUserId > 0)
 		{
 			$oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserUnchecked($iUserId);
@@ -186,7 +186,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 			$sPublicId = (string)$sLogin;
 			$bPrevState = \Aurora\System\Api::skipCheckUserRole(true);
 			$oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserByPublicId($sPublicId);
-			
+
 			if (empty($oUser))
 			{
 				$iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
@@ -194,7 +194,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 			}
 			\Aurora\System\Api::skipCheckUserRole($bPrevState);
 		}
-		
+
 //		$mResult = null;
 //		$aArgs = array(
 //			'TenantId' => $iTenantId,
@@ -203,82 +203,82 @@ class Module extends \Aurora\System\Module\AbstractModule
 //			'password' => $sPassword
 //		);
 //		$this->broadcastEvent(
-//			'CreateAccount', 
+//			'CreateAccount',
 //			$aArgs,
 //			$mResult
 //		);
-		
-		if ($oUser instanceOf \Aurora\Modules\Core\Classes\User)
+
+		if ($oUser instanceOf \Aurora\Modules\Core\Models\User)
 		{
-			$oAccount = new Classes\Account(self::GetName());
-			
-			$oAccount->IdUser = $oUser->EntityId;
+			$oAccount = new Models\Account();
+
+			$oAccount->IdUser = $oUser->Id;
 			$oAccount->Login = $sLogin;
 			$oAccount->Password = $sLogin.$sPassword;
-			
+
 			if ($this->getAccountsManager()->isExists($oAccount))
 			{
 				throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::AccountExists);
 			}
-			
+
 			$this->getAccountsManager()->createAccount($oAccount);
 			return $oAccount ? array(
-				'EntityId' => $oAccount->EntityId
+				'EntityId' => $oAccount->Id
 			) : false;
 		}
 		else
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::NonUserPassed);
 		}
-		
+
 		return false;
 	}
 	/**
 	 * Updates account.
-	 * 
-	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
+	 *
+	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
 	 * @return bool
 	 * @throws \Aurora\System\Exceptions\ApiException
 	 */
 	public function SaveAccount($oAccount)
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
-		
-		if ($oAccount instanceof Classes\Account)
+
+		if ($oAccount instanceof Models\Account)
 		{
 			$this->getAccountsManager()->createAccount($oAccount);
-			
+
 			return $oAccount ? array(
-				'EntityId' => $oAccount->EntityId
+				'EntityId' => $oAccount->Id
 			) : false;
 		}
 		else
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::InvalidInputParameter);
 		}
-		
+
 		return false;
 	}
 	/***** public functions *****/
-	
+
 	/***** public functions might be called with web API *****/
 	/**
 	 * @apiDefine StandardAuth Standard Auth Module
 	 * This module provides API for authentication by login/password that relies on database.
 	 */
-	
+
 	/**
 	 * @api {post} ?/Api/ CreateAuthenticatedUserAccount
 	 * @apiName CreateAuthenticatedUserAccount
 	 * @apiGroup StandardAuth
 	 * @apiDescription Creates basic account for specified user.
-	 * 
+	 *
 	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
 	 * @apiHeaderExample {json} Header-Example:
 	 *	{
 	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
 	 *	}
-	 * 
+	 *
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=CreateAuthenticatedUserAccount} Method Method name.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
@@ -286,27 +286,27 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * &emsp; **Login** *string* New account login.<br>
 	 * &emsp; **Password** *string* Password New account password.<br>
 	 * }
-	 * 
+	 *
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'CreateAuthenticatedUserAccount',
 	 *	Parameters: '{ Login: "login_value", Password: "password_value" }'
 	 * }
-	 * 
+	 *
 	 * @apiSuccess {object[]} Result Array of response objects.
 	 * @apiSuccess {string} Result.Module Module name.
 	 * @apiSuccess {string} Result.Method Method name.
 	 * @apiSuccess {bool} Result.Result Indicates if account was created successfully.
 	 * @apiSuccess {int} [Result.ErrorCode] Error code.
-	 * 
+	 *
 	 * @apiSuccessExample {json} Success response example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'CreateAuthenticatedUserAccount',
 	 *	Result: true
 	 * }
-	 * 
+	 *
 	 * @apiSuccessExample {json} Error response example:
 	 * {
 	 *	Module: 'StandardAuth',
@@ -317,7 +317,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	/**
 	 * Creates basic account for specified user.
-	 * 
+	 *
 	 * @param string $Login New account login.
 	 * @param string $Password New account password.
 	 * @return bool
@@ -325,30 +325,30 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function CreateAuthenticatedUserAccount($Login, $Password)
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
-		
+
 		$UserId = \Aurora\System\Api::getAuthenticatedUserId();
 		$result = false;
-		
+
 		if ($UserId)
 		{
 			$result = $this->CreateAccount(0, $UserId, $Login, $Password);
 		}
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * @api {post} ?/Api/ UpdateAccount
 	 * @apiName UpdateAccount
 	 * @apiGroup StandardAuth
 	 * @apiDescription Updates existing basic account.
-	 * 
+	 *
 	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
 	 * @apiHeaderExample {json} Header-Example:
 	 *	{
 	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
 	 *	}
-	 * 
+	 *
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=UpdateAccount} Method Method name.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
@@ -357,28 +357,28 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * &emsp; **Login** *string* New value of account login. *optional*<br>
 	 * &emsp; **Password** *string* New value of account password. *optional*<br>
 	 * }
-	 * 
+	 *
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'UpdateAccount',
 	 *	Parameters: '{ AccountId: 123, Login: "login_value", Password: "password_value" }'
 	 * }
-	 * 
+	 *
 	 * @apiSuccess {object[]} Result Array of response objects.
 	 * @apiSuccess {string} Result.Module Module name.
 	 * @apiSuccess {string} Result.Method Method name.
 	 * @apiSuccess {mixed} Result.Result Object in case of success, otherwise **false**.
 	 * @apiSuccess {string} Result.Result.EntityId Identifier of updated account.
 	 * @apiSuccess {int} [Result.ErrorCode] Error code.
-	 * 
+	 *
 	 * @apiSuccessExample {json} Success response example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'UpdateAccount',
 	 *	Result: true
 	 * }
-	 * 
+	 *
 	 * @apiSuccessExample {json} Error response example:
 	 * {
 	 *	Module: 'StandardAuth',
@@ -389,7 +389,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	/**
 	 * Updates existing basic account.
-	 * 
+	 *
 	 * @param int $AccountId Identifier of account to update.
 	 * @param string $Login New value of account login.
 	 * @param string $Password New value of account password.
@@ -399,16 +399,16 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function UpdateAccount($AccountId = 0, $Password = '')
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
-		
+
 		$oUser = \Aurora\System\Api::getAuthenticatedUser();
-		
+
 		if ($AccountId > 0)
 		{
 			$oAccount = $this->getAccountsManager()->getAccountById($AccountId);
 
 			if (!empty($oAccount))
 			{
-				if ($oAccount->IdUser !== $oUser->EntityId)
+				if ($oAccount->IdUser !== $oUser->Id)
 				{
 					\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::TenantAdmin);
 				}
@@ -418,58 +418,58 @@ class Module extends \Aurora\System\Module\AbstractModule
 				}
 				$this->getAccountsManager()->updateAccount($oAccount);
 			}
-			
+
 			return $oAccount ? array(
-				'EntityId' => $oAccount->EntityId
+				'EntityId' => $oAccount->Id
 			) : false;
 		}
 		else
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::InvalidInputParameter);
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * @api {post} ?/Api/ DeleteAccount
 	 * @apiName DeleteAccount
 	 * @apiGroup StandardAuth
 	 * @apiDescription Deletes basic account.
-	 * 
+	 *
 	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
 	 * @apiHeaderExample {json} Header-Example:
 	 *	{
 	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
 	 *	}
-	 * 
+	 *
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=DeleteAccount} Method Method name.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
 	 * &emsp; **AccountId** *int* Identifier of account to delete.<br>
 	 * }
-	 * 
+	 *
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'DeleteAccount',
 	 *	Parameters: '{ AccountId: 123 }'
 	 * }
-	 * 
+	 *
 	 * @apiSuccess {object[]} Result Array of response objects.
 	 * @apiSuccess {string} Result.Module Module name.
 	 * @apiSuccess {string} Result.Method Method name.
 	 * @apiSuccess {bool} Result.Result Indicates if account was deleted successfully.
 	 * @apiSuccess {int} [Result.ErrorCode] Error code.
-	 * 
+	 *
 	 * @apiSuccessExample {json} Success response example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'DeleteAccount',
 	 *	Result: true
 	 * }
-	 * 
+	 *
 	 * @apiSuccessExample {json} Error response example:
 	 * {
 	 *	Module: 'StandardAuth',
@@ -480,7 +480,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	/**
 	 * Deletes basic account.
-	 * 
+	 *
 	 * @param int $AccountId Identifier of account to delete.
 	 * @return bool
 	 * @throws \Aurora\System\Exceptions\ApiException
@@ -488,22 +488,22 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function DeleteAccount($AccountId = 0)
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
-		
+
 		$oUser = \Aurora\System\Api::getAuthenticatedUser();
-		
+
 		$bResult = false;
-		
+
 		if ($AccountId > 0)
 		{
 			$oAccount = $this->getAccountsManager()->getAccountById($AccountId);
-			
-			if (!empty($oAccount) && ($oAccount->IdUser === $oUser->EntityId || 
+
+			if (!empty($oAccount) && ($oAccount->IdUser === $oUser->Id ||
 					$oUser->Role === \Aurora\System\Enums\UserRole::SuperAdmin ||
 					$oUser->Role === \Aurora\System\Enums\UserRole::TenantAdmin))
 			{
 				$bResult = $this->getAccountsManager()->deleteAccount($oAccount);
 			}
-			
+
 			return $bResult;
 		}
 		else
@@ -511,46 +511,46 @@ class Module extends \Aurora\System\Module\AbstractModule
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::InvalidInputParameter);
 		}
 	}
-	
+
 	/**
 	 * @api {post} ?/Api/ GetUserAccounts
 	 * @apiName GetUserAccounts
 	 * @apiGroup StandardAuth
 	 * @apiDescription Obtains basic account for specified user.
-	 * 
+	 *
 	 * @apiHeader {string} Authorization "Bearer " + Authentication token which was received as the result of Core.Login method.
 	 * @apiHeaderExample {json} Header-Example:
 	 *	{
 	 *		"Authorization": "Bearer 32b2ecd4a4016fedc4abee880425b6b8"
 	 *	}
-	 * 
+	 *
 	 * @apiParam {string=StandardAuth} Module Module name.
 	 * @apiParam {string=GetUserAccounts} Method Method name.
 	 * @apiParam {string} Parameters JSON.stringified object <br>
 	 * {<br>
 	 * &emsp; **UserId** *int* User identifier.<br>
 	 * }
-	 * 
+	 *
 	 * @apiParamExample {json} Request-Example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'GetUserAccounts',
 	 *	Parameters: '{ UserId: 123 }'
 	 * }
-	 * 
+	 *
 	 * @apiSuccess {object[]} Result Array of response objects.
 	 * @apiSuccess {string} Result.Module Module name.
 	 * @apiSuccess {string} Result.Method Method name.
 	 * @apiSuccess {mixed} Result.Result List of account objects in case of success, otherwise **false**. Account object is like {id: 234, login: 'account_login'}.
 	 * @apiSuccess {int} [Result.ErrorCode] Error code.
-	 * 
+	 *
 	 * @apiSuccessExample {json} Success response example:
 	 * {
 	 *	Module: 'StandardAuth',
 	 *	Method: 'GetUserAccounts',
 	 *	Result: [{id: 234, login: 'account_login234'}, {id: 235, login: 'account_login235'}]
 	 * }
-	 * 
+	 *
 	 * @apiSuccessExample {json} Error response example:
 	 * {
 	 *	Module: 'StandardAuth',
@@ -561,29 +561,29 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	/**
 	 * Obtains basic account for specified user.
-	 * 
+	 *
 	 * @param int $UserId User identifier.
 	 * @return array|bool
 	 */
 	public function GetUserAccounts($UserId)
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
-		
+
 		$oUser = \Aurora\System\Api::getAuthenticatedUser();
-		if ($oUser->isNormalOrTenant() && $oUser->EntityId != $UserId)
+		if ($oUser->isNormalOrTenant() && $oUser->Id != $UserId)
 		{
 			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::AccessDenied);
 		}
-		
+
 		$aAccounts = array();
 		$mResult = $this->getAccountsManager()->getUserAccounts($UserId);
 		if (\is_array($mResult))
 		{
-			foreach($mResult as $oItem)
+			foreach($mResult as $aItem)
 			{
 				$aAccounts[] = array(
-					'id' => $oItem->EntityId,
-					'login' => $oItem->Login
+					'id' => $aItem['Id'],
+					'login' => $aItem['Login']
 				);
 			}
 		}

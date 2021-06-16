@@ -19,7 +19,7 @@ class Account extends \Aurora\System\Classes\AbstractAccount
 {
 	/**
 	 * Creates a new instance of the object.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function __construct($sModule)
@@ -33,10 +33,10 @@ class Account extends \Aurora\System\Classes\AbstractAccount
 		);
 		parent::__construct($sModule);
 	}
-	
+
 	/**
 	 * Checks if the user has only valid data.
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function validate()
