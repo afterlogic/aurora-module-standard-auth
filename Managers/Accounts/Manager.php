@@ -7,6 +7,10 @@
 
 namespace Aurora\Modules\StandardAuth\Managers\Accounts;
 
+use \Aurora\System\Enums\SortOrder;
+use \Aurora\Modules\StandardAuth\Models\Account;
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * @license https://www.gnu.org/licenses/agpl-3.0.html AGPL-3.0
  * @license https://afterlogic.com/products/common-licensing Afterlogic Software License
@@ -14,20 +18,13 @@ namespace Aurora\Modules\StandardAuth\Managers\Accounts;
  */
 class Manager extends \Aurora\System\Managers\AbstractManager
 {
-	/**
-	 * @var \Aurora\System\Managers\Eav
-	 */
-	public $oEavManager = null;
-	
 	public function __construct(\Aurora\System\Module\AbstractModule $oModule = null)
 	{
 		parent::__construct($oModule);
-		
-		$this->oEavManager = \Aurora\System\Managers\Eav::getInstance();
 	}
 
 	/**
-	 * 
+	 *
 	 * @param int $iAccountId
 	 * @return boolean
 	 * @throws \Aurora\System\Exceptions\BaseException
@@ -40,8 +37,8 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			if (is_numeric($iAccountId))
 			{
 				$iAccountId = (int) $iAccountId;
-				
-				$oAccount = $this->oEavManager->getEntity($iAccountId, '\Aurora\Modules\StandardAuth\Classes\Account');
+
+				$oAccount = Account::find($iAccountId);
 			}
 			else
 			{
@@ -55,14 +52,14 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		}
 		return $oAccount;
 	}
-	
+
 	/**
-	 * Retrieves information on particular WebMail Pro user. 
-	 * 
+	 * Retrieves information on particular WebMail Pro user.
+	 *
 	 * @todo not used
-	 * 
+	 *
 	 * @param int $iUserId User identifier.
-	 * 
+	 *
 	 * @return User | false
 	 */
 	public function getAccountByCredentials($sLogin, $sPassword)
@@ -70,20 +67,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$oAccount = null;
 		try
 		{
-			$aResults = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
-				->select(['IsDisabled', 'Password', 'IdUser'])
-				->where([
-					'$AND' => [
-						'Password' => $sLogin . $sPassword,
-						'IsDisabled' => false
-					]
-				])
-				->exec();
-
-			if (is_array($aResults) && count($aResults) === 1)
-			{
-				$oAccount = $aResults[0];
-			}
+			$oAccount = Account::where('IsDisabled', false)->where('Password', $sLogin . $sPassword)->first();
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{
@@ -107,32 +91,29 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$aResult = false;
 		try
 		{
-			$aFilters =  array();
-			
+			$query = Account::query();
 			if ($sSearchDesc !== '')
 			{
-				$aFilters['Login'] = '%'.$sSearchDesc.'%';
+				$query = $query->where('Login', 'LIKE', '%'.$sSearchDesc.'%');
 			}
+			if ($iPage > 0) {
+				$query = $query->offset($iPage);
+			}
+			if ($iUsersPerPage > 0) {
+				$query = $query->limit($iUsersPerPage);
+			}
+			$aResults = $query->orderBy($sOrderBy, $iOrderType === SortOrder::ASC ? 'asc' : 'desc')->get();
 
-			$aResults = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
-				->select(['IsDisabled', 'Login', 'Password', 'IdUser'])
-				->where($aFilters)
-				->limit($iUsersPerPage)
-				->offset($iPage)
-				->orderBy($sOrderBy)
-				->sortOrder($iOrderType)
-				->exec();
-
-			if (is_array($aResults))
+			if ($aResults)
 			{
 				foreach($aResults as $oItem)
 				{
-					$aResult[$oItem->EntityId] = array(
+					$aResult[$oItem->Id] = [
 						$oItem->Login,
 						$oItem->Password,
 						$oItem->IdUser,
 						$oItem->IsDisabled
-					);
+					];
 				}
 			}
 		}
@@ -145,21 +126,18 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 
 	/**
-	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
 	 *
 	 * @return bool
 	 */
-	public function isExists(\Aurora\Modules\StandardAuth\Classes\Account $oAccount)
+	public function isExists(\Aurora\Modules\StandardAuth\Models\Account $oAccount)
 	{
 		$bResult = false;
 		try
 		{
-			$aResults = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
-				->select(['Login'])
-				->where(['Login' => $oAccount->Login])
-				->exec();			
+			$oAccount = Account::where('Login', $oAccount->Login)->first();
 
-			if (is_array($aResults) && count($aResults) > 0)
+			if ($oAccount)
 			{
 				$bResult = true;
 			}
@@ -170,13 +148,13 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		}
 		return $bResult;
 	}
-	
+
 	/**
-	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
 	 *
 	 * @return bool
 	 */
-	public function createAccount (\Aurora\Modules\StandardAuth\Classes\Account &$oAccount)
+	public function createAccount (\Aurora\Modules\StandardAuth\Models\Account &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -185,7 +163,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			{
 				if (!$this->isExists($oAccount))
 				{
-					if (!$this->oEavManager->saveEntity($oAccount))
+					if (!$oAccount->save())
 					{
 						throw new \Aurora\System\Exceptions\ManagerException(Errs::UsersManager_UserCreateFailed);
 					}
@@ -206,13 +184,13 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 
 		return $bResult;
 	}
-	
+
 	/**
-	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
 	 *
 	 * @return bool
 	 */
-	public function updateAccount (\Aurora\Modules\StandardAuth\Classes\Account &$oAccount)
+	public function updateAccount (\Aurora\Modules\StandardAuth\Models\Account &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -221,7 +199,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			{
 //				if ($this->isExists($oAccount))
 //				{
-					if (!$this->oEavManager->saveEntity($oAccount))
+					if (!$oAccount->save())
 					{
 						throw new \Aurora\System\Exceptions\ManagerException(Errs::UsersManager_UserCreateFailed);
 					}
@@ -242,18 +220,18 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 
 		return $bResult;
 	}
-	
+
 	/**
-	 * 
-	 * @param \Aurora\Modules\StandardAuth\Classes\Account $oAccount
+	 *
+	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
 	 * @return bool
 	 */
-	public function deleteAccount(\Aurora\Modules\StandardAuth\Classes\Account $oAccount)
+	public function deleteAccount(\Aurora\Modules\StandardAuth\Models\Account $oAccount)
 	{
 		$bResult = false;
 		try
 		{
-			$bResult = $this->oEavManager->deleteEntity($oAccount->EntityId, \Aurora\Modules\StandardAuth\Classes\Account::class);
+			$oAccount->delete();
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{
@@ -262,12 +240,12 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 
 		return $bResult;
 	}
-	
+
 	/**
 	 * Obtains basic accounts for specified user.
-	 * 
+	 *
 	 * @param int $iUserId
-	 * 
+	 *
 	 * @return array|boolean
 	 */
 	public function getUserAccounts($iUserId, $bWithPassword = false)
@@ -275,23 +253,18 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$mResult = false;
 		try
 		{
-			$aFields = [
-				'Login'
-			];
-			if ($bWithPassword)
+			// $aFields = [
+			// 	'Login'
+			// ];
+			// if ($bWithPassword)
+			// {
+			// 	$aFields[] = 'Password';
+			// }
+			$mResult = Account::where('IdUser', $iUserId)->where('IsDisabled', false)->get();
+			if ($mResult instanceof Collection)
 			{
-				$aFields[] = 'Password';
+				$mResult = $mResult->toArray();
 			}
-			
-			$mResult = (new \Aurora\System\EAV\Query(\Aurora\Modules\StandardAuth\Classes\Account::class))
-				->select($aFields)
-				->where([
-					'$AND' => [
-						'IdUser' => $iUserId, 
-						'IsDisabled' => false
-					]
-				])
-				->exec();
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{
