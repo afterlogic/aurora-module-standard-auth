@@ -21,7 +21,8 @@ class CreateAccountsTable extends Migration
             $table->string('Password')->default('');
             $table->dateTime('LastModified')->default(date('Y-m-d H:i:s'));
             $table->json('Properties')->nullable();
-            $table->timestamps();
+            $table->timestamp(\Aurora\System\Classes\Model::CREATED_AT)->nullable();
+            $table->timestamp(\Aurora\System\Classes\Model::UPDATED_AT)->nullable();
         });
     }
 
