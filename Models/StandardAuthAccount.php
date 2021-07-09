@@ -4,7 +4,7 @@ namespace Aurora\Modules\StandardAuth\Models;
 
 use \Aurora\System\Classes\Model;
 
-class Account extends Model
+class StandardAuthAccount extends Model
 {
     protected $moduleName = 'StandardAuth';
 

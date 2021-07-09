@@ -8,7 +8,7 @@
 namespace Aurora\Modules\StandardAuth\Managers\Accounts;
 
 use \Aurora\System\Enums\SortOrder;
-use \Aurora\Modules\StandardAuth\Models\Account;
+use \Aurora\Modules\StandardAuth\Models\StandardAuthAccount;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -38,7 +38,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			{
 				$iAccountId = (int) $iAccountId;
 
-				$oAccount = Account::find($iAccountId);
+				$oAccount = StandardAuthAccount::find($iAccountId);
 			}
 			else
 			{
@@ -67,7 +67,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$oAccount = null;
 		try
 		{
-			$oAccount = Account::where('IsDisabled', false)->where('Password', $sLogin . $sPassword)->first();
+			$oAccount = StandardAuthAccount::where('IsDisabled', false)->where('Password', $sLogin . $sPassword)->first();
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{
@@ -91,7 +91,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$aResult = false;
 		try
 		{
-			$query = Account::query();
+			$query = StandardAuthAccount::query();
 			if ($sSearchDesc !== '')
 			{
 				$query = $query->where('Login', 'LIKE', '%'.$sSearchDesc.'%');
@@ -126,16 +126,16 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 
 	/**
-	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\StandardAuthAccount $oAccount
 	 *
 	 * @return bool
 	 */
-	public function isExists(\Aurora\Modules\StandardAuth\Models\Account $oAccount)
+	public function isExists(\Aurora\Modules\StandardAuth\Models\StandardAuthAccount $oAccount)
 	{
 		$bResult = false;
 		try
 		{
-			$oAccount = Account::where('Login', $oAccount->Login)->first();
+			$oAccount = StandardAuthAccount::where('Login', $oAccount->Login)->first();
 
 			if ($oAccount)
 			{
@@ -150,11 +150,11 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 
 	/**
-	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\StandardAuthAccount $oAccount
 	 *
 	 * @return bool
 	 */
-	public function createAccount (\Aurora\Modules\StandardAuth\Models\Account &$oAccount)
+	public function createAccount (\Aurora\Modules\StandardAuth\Models\StandardAuthAccount &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -186,11 +186,11 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 	}
 
 	/**
-	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\StandardAuthAccount $oAccount
 	 *
 	 * @return bool
 	 */
-	public function updateAccount (\Aurora\Modules\StandardAuth\Models\Account &$oAccount)
+	public function updateAccount (\Aurora\Modules\StandardAuth\Models\StandardAuthAccount &$oAccount)
 	{
 		$bResult = false;
 		try
@@ -223,10 +223,10 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 
 	/**
 	 *
-	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\StandardAuthAccount $oAccount
 	 * @return bool
 	 */
-	public function deleteAccount(\Aurora\Modules\StandardAuth\Models\Account $oAccount)
+	public function deleteAccount(\Aurora\Modules\StandardAuth\Models\StandardAuthAccount $oAccount)
 	{
 		$bResult = false;
 		try
@@ -260,7 +260,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			// {
 			// 	$aFields[] = 'Password';
 			// }
-			$mResult = Account::where('IdUser', $iUserId)->where('IsDisabled', false)->get();
+			$mResult = StandardAuthAccount::where('IdUser', $iUserId)->where('IsDisabled', false)->get();
 			if ($mResult instanceof Collection)
 			{
 				$mResult = $mResult->toArray();

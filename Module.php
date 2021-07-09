@@ -92,7 +92,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onCheckAccountExists($aArgs)
 	{
-		$oAccount = new Models\Account();
+		$oAccount = new Models\StandardAuthAccount();
 		$oAccount->Login = $aArgs['Login'];
 		if ($this->getAccountsManager()->isExists($oAccount))
 		{
@@ -210,7 +210,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 
 		if ($oUser instanceOf \Aurora\Modules\Core\Models\User)
 		{
-			$oAccount = new Models\Account();
+			$oAccount = new Models\StandardAuthAccount();
 
 			$oAccount->IdUser = $oUser->Id;
 			$oAccount->Login = $sLogin;
@@ -236,7 +236,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	/**
 	 * Updates account.
 	 *
-	 * @param \Aurora\Modules\StandardAuth\Models\Account $oAccount
+	 * @param \Aurora\Modules\StandardAuth\Models\StandardAuthAccount $oAccount
 	 * @return bool
 	 * @throws \Aurora\System\Exceptions\ApiException
 	 */
@@ -244,7 +244,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::Anonymous);
 
-		if ($oAccount instanceof Models\Account)
+		if ($oAccount instanceof Models\StandardAuthAccount)
 		{
 			$this->getAccountsManager()->createAccount($oAccount);
 
