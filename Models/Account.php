@@ -6,6 +6,8 @@ use \Aurora\System\Classes\Model;
 
 class Account extends Model
 {
+
+    protected $table = 'standard_auth_accounts';
     protected $moduleName = 'StandardAuth';
 
     /**
