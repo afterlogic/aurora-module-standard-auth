@@ -33,6 +33,6 @@ class CreateAccountsTable extends Migration
      */
     public function down()
     {
-        Capsule::schema()->dropIfExists('accounts');
+        Capsule::schema()->dropIfExists('standard_auth_accounts');
     }
 }
