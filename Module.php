@@ -214,7 +214,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 
 			$oAccount->IdUser = $oUser->Id;
 			$oAccount->Login = $sLogin;
-			$oAccount->Password = $sLogin.$sPassword;
+			$oAccount->setPassword($sPassword);
 
 			if ($this->getAccountsManager()->isExists($oAccount))
 			{
@@ -414,7 +414,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 				}
 				if ($Password)
 				{
-					$oAccount->Password = $oAccount->Login.$Password;
+					$oAccount->setPassword($Password);
 				}
 				$this->getAccountsManager()->updateAccount($oAccount);
 			}

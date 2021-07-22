@@ -67,7 +67,13 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		$oAccount = null;
 		try
 		{
-			$oAccount = Account::where('IsDisabled', false)->where('Password', $sLogin . $sPassword)->first();
+			$account = Account::where('IsDisabled', false)->where('Login', $sLogin)->get();
+			if(!$account->count() || $account->count() > 1){
+				return null;
+			}
+			if($account->first()->getPassword() === $sPassword){
+				$oAccount = $account->first();
+			}
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{
