@@ -16,6 +16,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
+        'Id',
         'IsDisabled',
         'IdUser',
         'Login',
