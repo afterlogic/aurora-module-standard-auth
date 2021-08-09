@@ -34,6 +34,7 @@ class Account extends Model
 
     protected $casts = [
         'Properties' => 'array',
+        'Password' => \Aurora\System\Casts\Encrypt::class
     ];
 
     protected $attributes = [
@@ -43,36 +44,15 @@ class Account extends Model
 	{
 		return $this->Login;
 	}
+
     public function getPassword()
     {
-        $sPassword = '';
-        if (!$this->Password) // TODO: Legacy support
-        {
-            $sSalt = \Aurora\System\Api::$sSalt;
-            \Aurora\System\Api::$sSalt = md5($sSalt);
-            $sPassword = $this->Password;
-            \Aurora\System\Api::$sSalt = $sSalt;
-        }
-        else
-        {
-            $sPassword = $this->Password;
-        }
-
-        $sPassword = \Aurora\System\Utils::DecryptValue($sPassword);
-        if ($sPassword !== '' && strpos($sPassword, $this->Login . ':') === false)
-        {
-            $sPassword = substr($sPassword, strlen($this->Login));
-        }
-        else
-        {
-            $sPassword = substr($sPassword, strlen($this->Login) + 1);
-        }
-        return $sPassword;
+        return $this->Password;
     }
 
     public function setPassword($sPassword)
     {
-        $this->Password = \Aurora\System\Utils::EncryptValue($this->Login . ':' . $sPassword);
+        $this->Password = $sPassword;
     }
 
 }
