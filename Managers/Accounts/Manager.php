@@ -267,10 +267,6 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 			// 	$aFields[] = 'Password';
 			// }
 			$mResult = Account::where('IdUser', $iUserId)->where('IsDisabled', false)->get();
-			if ($mResult instanceof Collection)
-			{
-				$mResult = $mResult->toArray();
-			}
 		}
 		catch (\Aurora\System\Exceptions\BaseException $oException)
 		{

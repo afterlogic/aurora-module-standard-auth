@@ -109,12 +109,9 @@ class Module extends \Aurora\System\Module\AbstractModule
 	public function onBeforeDeleteUser($aArgs, $mResult)
 	{
 		$mAccounts = $this->getAccountsManager()->getUserAccounts($aArgs['UserId']);
-		if (\is_array($mAccounts))
+		foreach($mAccounts as $oItem)
 		{
-			foreach($mAccounts as $oItem)
-			{
-				self::Decorator()->DeleteAccount($oItem->Id);
-			}
+			self::Decorator()->DeleteAccount($oItem->Id);
 		}
 	}
 
@@ -130,23 +127,20 @@ class Module extends \Aurora\System\Module\AbstractModule
 		if (isset($aUserInfo['userId']))
 		{
 			$mResult = $this->getAccountsManager()->getUserAccounts($aUserInfo['userId'], $bWithPassword);
-			if (\is_array($mResult))
+			foreach($mResult as $oItem)
 			{
-				foreach($mResult as $oItem)
+				$aItem = array(
+					'Type' => $oItem->getName(),
+					'Module' => $oItem->getModule(),
+					'Id' => $oItem->Id,
+					'UUID' => '', //$oItem->UUID, TODO:
+					'Login' => $oItem->Login
+				);
+				if ($bWithPassword)
 				{
-					$aItem = array(
-						'Type' => $oItem->getName(),
-						'Module' => $oItem->getModule(),
-						'Id' => $oItem->Id,
-						'UUID' => '', //$oItem->UUID, TODO:
-						'Login' => $oItem->Login
-					);
-					if ($bWithPassword)
-					{
-						$aItem['Password'] = $oItem->Password;
-					}
-					$aResult[] = $aItem;
+					$aItem['Password'] = $oItem->Password;
 				}
+				$aResult[] = $aItem;
 			}
 		}
 	}
@@ -577,16 +571,15 @@ class Module extends \Aurora\System\Module\AbstractModule
 
 		$aAccounts = array();
 		$mResult = $this->getAccountsManager()->getUserAccounts($UserId);
-		if (\is_array($mResult))
+		
+		foreach($mResult as $aItem)
 		{
-			foreach($mResult as $aItem)
-			{
-				$aAccounts[] = array(
-					'id' => $aItem['Id'],
-					'login' => $aItem['Login']
-				);
-			}
+			$aAccounts[] = array(
+				'id' => $aItem['Id'],
+				'login' => $aItem['Login']
+			);
 		}
+
 		return $aAccounts;
 	}
 	/***** public functions might be called with web API *****/
