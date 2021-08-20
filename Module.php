@@ -322,18 +322,20 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @param string $Password New account password.
 	 * @return bool
 	 */
-	public function CreateAuthenticatedUserAccount($Login, $Password)
+	public function CreateAuthenticatedUserAccount($UserId, $Login, $Password)
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 		
-		$UserId = \Aurora\System\Api::getAuthenticatedUserId();
+		if (empty($UserId))
+		{
+			$UserId = \Aurora\System\Api::getAuthenticatedUserId();
+		}
+
 		$result = false;
-		
-		if ($UserId)
+		if (!empty($UserId))
 		{
 			$result = $this->CreateAccount(0, $UserId, $Login, $Password);
 		}
-		
 		return $result;
 	}
 	
