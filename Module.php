@@ -43,6 +43,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
 		$this->subscribeEvent('Core::DeleteUser::before', array($this, 'onBeforeDeleteUser'));
 		$this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
+		$this->subscribeEvent('Core::GetAccountUsedToAuthorize', array($this, 'onGetAccountUsedToAuthorize'), 200);
 
 		$this->denyMethodCallByWebApi('CreateAccount');
 		$this->denyMethodCallByWebApi('SaveAccount');
@@ -142,6 +143,16 @@ class Module extends \Aurora\System\Module\AbstractModule
 				}
 				$aResult[] = $aItem;
 			}
+		}
+	}
+
+	public function onGetAccountUsedToAuthorize($aArgs, &$mResult)
+	{
+		$oAccount = $this->getAccountsManager()->getAccountUsedToAuthorize($aArgs['Login']);
+		if ($oAccount)
+		{
+			$mResult = $oAccount;
+			return true;
 		}
 	}
 

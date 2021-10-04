@@ -274,4 +274,15 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 		}
 		return $mResult;
 	}
+
+	public function getAccountUsedToAuthorize($sEmail)
+	{
+		$aFilters = [
+			'Login' => $sEmail,
+			'IsDisabled' => false
+		];
+        $mAccount = Account::where($aFilters)->first();
+
+		return $mAccount;
+	}
 }
