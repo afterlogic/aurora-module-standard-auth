@@ -7,6 +7,8 @@
 
 namespace Aurora\Modules\StandardAuth;
 
+use Aurora\Modules\StandardAuth\Models\Account;
+
 /**
  * This module provides API for authentication by login/password that relies on database.
  *
@@ -109,11 +111,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 */
 	public function onBeforeDeleteUser($aArgs, $mResult)
 	{
-		$mAccounts = $this->getAccountsManager()->getUserAccounts($aArgs['UserId']);
-		foreach($mAccounts as $oItem)
-		{
-			self::Decorator()->DeleteAccount($oItem->Id);
-		}
+		Account::where('IdUser', $aArgs['UserId'])->delete();
 	}
 
 	/**
