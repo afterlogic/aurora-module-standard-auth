@@ -43,7 +43,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		$this->subscribeEvent('Login', array($this, 'onLogin'), 90);
 		$this->subscribeEvent('Register', array($this, 'onRegister'));
 		$this->subscribeEvent('CheckAccountExists', array($this, 'onCheckAccountExists'));
-		$this->subscribeEvent('Core::DeleteUser::before', array($this, 'onBeforeDeleteUser'));
+		$this->subscribeEvent('Core::DeleteUser::after', array($this, 'onAfterDeleteUser'));
 		$this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
 		$this->subscribeEvent('Core::GetAccountUsedToAuthorize', array($this, 'onGetAccountUsedToAuthorize'), 200);
 
@@ -109,9 +109,11 @@ class Module extends \Aurora\System\Module\AbstractModule
 	 * @param array $aArgs
 	 * @param mixed $mResult.
 	 */
-	public function onBeforeDeleteUser($aArgs, $mResult)
+	public function onAfterDeleteUser($aArgs, $mResult)
 	{
-		Account::where('IdUser', $aArgs['UserId'])->delete();
+		if ($mResult) {
+			Account::where('IdUser', $aArgs['UserId'])->delete();
+		}
 	}
 
 	/**
