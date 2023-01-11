@@ -233,7 +233,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 		}
 		else
 		{
-			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::NonUserPassed);
+			throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::CanNotCreateAccount);
 		}
 
 		return false;
