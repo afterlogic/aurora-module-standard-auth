@@ -2,11 +2,10 @@
 
 namespace Aurora\Modules\StandardAuth\Models;
 
-use \Aurora\System\Classes\Model;
+use Aurora\System\Classes\Model;
 
 class Account extends Model
 {
-
     protected $table = 'standard_auth_accounts';
     protected $moduleName = 'StandardAuth';
 
@@ -21,7 +20,7 @@ class Account extends Model
         'IdUser',
         'Login',
         'Password',
-		'LastModified',
+        'LastModified',
         'Properties'
     ];
 
@@ -41,10 +40,10 @@ class Account extends Model
     protected $attributes = [
     ];
 
-	public function getLogin()
-	{
-		return $this->Login;
-	}
+    public function getLogin()
+    {
+        return $this->Login;
+    }
 
     public function getPassword()
     {
@@ -55,5 +54,4 @@ class Account extends Model
     {
         $this->Password = $sPassword;
     }
-
 }
