@@ -223,13 +223,6 @@ class Manager extends \Aurora\System\Managers\AbstractManager
     {
         $mResult = false;
         try {
-            // $aFields = [
-            // 	'Login'
-            // ];
-            // if ($bWithPassword)
-            // {
-            // 	$aFields[] = 'Password';
-            // }
             $mResult = Account::where('IdUser', $iUserId)->where('IsDisabled', false)->get();
         } catch (\Aurora\System\Exceptions\BaseException $oException) {
             $this->setLastException($oException);
