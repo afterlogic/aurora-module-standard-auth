@@ -171,7 +171,7 @@ class Module extends \Aurora\System\Module\AbstractModule
         );
 
         if ($iUserId > 0) {
-            $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserUnchecked($iUserId);
+            $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserWithoutRoleCheck($iUserId);
         } else {
             $sPublicId = (string)$sLogin;
             $bPrevState = \Aurora\System\Api::skipCheckUserRole(true);
@@ -179,7 +179,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 
             if (empty($oUser)) {
                 $iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
-                $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserUnchecked($iUserId);
+                $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserWithoutRoleCheck($iUserId);
             }
             \Aurora\System\Api::skipCheckUserRole($bPrevState);
         }
