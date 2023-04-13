@@ -52,9 +52,10 @@ class Manager extends \Aurora\System\Managers\AbstractManager
      *
      * @todo not used
      *
-     * @param int $iUserId User identifier.
+     * @param string $sLogin User identifier.
+     * @param string $sPassword User identifier.
      *
-     * @return User | false
+     * @return Account | null
      */
     public function getAccountByCredentials($sLogin, $sPassword)
     {
@@ -68,7 +69,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
                 $oAccount = $account->first();
             }
         } catch (\Aurora\System\Exceptions\BaseException $oException) {
-            $oAccount = false;
+            $oAccount = null;
             $this->setLastException($oException);
         }
         return $oAccount;

@@ -73,7 +73,7 @@ class Module extends \Aurora\System\Module\AbstractModule
      * Creates account with specified credentials.
      * @ignore
      * @param array $aArgs New account credentials.
-     * @param type $mResult Is passed by reference.
+     * @param Models\Account|bool $mResult Is passed by reference.
      */
     public function onRegister($aArgs, &$mResult)
     {
@@ -155,7 +155,7 @@ class Module extends \Aurora\System\Module\AbstractModule
      * @param int $iUserId User identifier.
      * @param string $sLogin New account login.
      * @param string $sPassword New account password.
-     * @return bool|array
+     * @return Models\Account|bool
      * @throws \Aurora\System\Exceptions\ApiException
      */
     public function CreateAccount($iTenantId = 0, $iUserId = 0, $sLogin = '', $sPassword = '')
@@ -177,7 +177,7 @@ class Module extends \Aurora\System\Module\AbstractModule
             $bPrevState = \Aurora\System\Api::skipCheckUserRole(true);
             $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserByPublicId($sPublicId);
 
-            if (empty($oUser)) {
+            if (!$oUser) {
                 $iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
                 $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserWithoutRoleCheck($iUserId);
             }
@@ -372,7 +372,6 @@ class Module extends \Aurora\System\Module\AbstractModule
      * Updates existing basic account.
      *
      * @param int $AccountId Identifier of account to update.
-     * @param string $Login New value of account login.
      * @param string $Password New value of account password.
      * @return array|bool
      * @throws \Aurora\System\Exceptions\ApiException
