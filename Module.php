@@ -22,6 +22,14 @@ class Module extends \Aurora\System\Module\AbstractModule
 {
     public $oApiAccountsManager = null;
 
+    /**
+     * @return Module
+     */
+    public static function Decorator()
+    {
+        return parent::Decorator();
+    }
+
     public function getAccountsManager()
     {
         if ($this->oApiAccountsManager === null) {
