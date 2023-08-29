@@ -398,11 +398,12 @@ class Module extends \Aurora\System\Module\AbstractModule
      * Updates existing basic account.
      *
      * @param int $AccountId Identifier of account to update.
+     * @param string $CurrentPassword Current value of account password.
      * @param string $Password New value of account password.
      * @return array|bool
      * @throws \Aurora\System\Exceptions\ApiException
      */
-    public function UpdateAccount($AccountId = 0, $Password = '')
+    public function UpdateAccount($AccountId = 0, $CurrentPassword = '', $Password = '')
     {
         \Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 
@@ -415,10 +416,19 @@ class Module extends \Aurora\System\Module\AbstractModule
                 if ($oAccount->IdUser !== $oUser->Id) {
                     \Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::TenantAdmin);
                 }
+
+                if ($oUser->Role !== \Aurora\System\Enums\UserRole::SuperAdmin && $oAccount->getPassword() !== $CurrentPassword) {
+                    \Aurora\System\Api::LogEvent('password-change-failed: ' . $oAccount->Login, self::GetName());
+                    throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Exceptions\Errs::UserManager_AccountOldPasswordNotCorrect);
+                }
+
                 if ($Password) {
                     $oAccount->setPassword($Password);
+                    $this->getAccountsManager()->updateAccount($oAccount);
+                } else {
+                    \Aurora\System\Api::LogEvent('password-change-failed: ' . $oAccount->Login, self::GetName());
+                    throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Exceptions\Errs::UserManager_AccountNewPasswordRejected);
                 }
-                $this->getAccountsManager()->updateAccount($oAccount);
             }
 
             return $oAccount ? array(
