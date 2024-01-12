@@ -2,7 +2,7 @@
 
 namespace Aurora\Modules\StandardAuth\Models;
 
-use Aurora\System\Classes\Model;
+use Aurora\System\Classes\Account as SystemAccount;
 
 /**
  * Aurora\Modules\StandardAuth\Models\Account
@@ -38,7 +38,7 @@ use Aurora\System\Classes\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Account extends Model
+class Account extends SystemAccount
 {
     protected $table = 'standard_auth_accounts';
     protected $moduleName = 'StandardAuth';
