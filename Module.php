@@ -71,6 +71,7 @@ class Module extends \Aurora\System\Module\AbstractModule
         $this->subscribeEvent('Core::DeleteUser::after', array($this, 'onAfterDeleteUser'));
         $this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
         $this->subscribeEvent('Core::GetAccountUsedToAuthorize', array($this, 'onGetAccountUsedToAuthorize'), 200);
+        $this->subscribeEvent('StandardResetPassword::ChangeAccountPassword', array($this, 'onChangeAccountPassword'));
 
         $this->denyMethodCallByWebApi('CreateAccount');
         $this->denyMethodCallByWebApi('SaveAccount');
@@ -146,15 +147,13 @@ class Module extends \Aurora\System\Module\AbstractModule
      */
     public function onGetAccounts($aArgs, &$aResult)
     {
-        $aUserInfo = \Aurora\System\Api::getAuthenticatedUserInfo($aArgs['AuthToken']);
-        if (isset($aUserInfo['userId'])) {
-            $mResult = $this->getAccountsManager()->getUserAccounts($aUserInfo['userId']);
+        if (isset($aArgs['UserId'])) {
+            $mResult = $this->getAccountsManager()->getUserAccounts($aArgs['UserId']);
             foreach ($mResult as $oItem) {
                 $aResult[] = [
                     'Type' => $oItem->getName(),
-                    'Module' => $oItem->getModule(),
+                    'Module' => 'StandardAuth',//$oItem->getModule(),
                     'Id' => $oItem->Id,
-                    'UUID' => '', //$oItem->UUID, TODO:
                     'Login' => $oItem->Login
                 ];
             }
@@ -168,6 +167,47 @@ class Module extends \Aurora\System\Module\AbstractModule
             $mResult = $oAccount;
             return true;
         }
+    }
+
+    /**
+     * Changes password for account if allowed.
+     * @param array $aArguments
+     * @param mixed $mResult
+     */
+    public function onChangeAccountPassword($aArguments, &$mResult)
+    {
+        $bPasswordChanged = false;
+        $bBreakSubscriptions = false;
+        $bSkipCurrentPasswordCheck = isset($aArguments['SkipCurrentPasswordCheck']) && $aArguments['SkipCurrentPasswordCheck'];
+        $oAccount = $aArguments['Account'];
+
+        if ($oAccount instanceof Account
+            && ($oAccount->getPassword() === $aArguments['CurrentPassword'] || $bSkipCurrentPasswordCheck)
+        ) {
+            $bPasswordChanged = $this->changePassword($oAccount, $aArguments['NewPassword']);
+            $bBreakSubscriptions = true;
+        }
+
+        if (is_array($mResult)) {
+            $mResult['AccountPasswordChanged'] = $mResult['AccountPasswordChanged'] || $bPasswordChanged;
+        }
+
+        return $bBreakSubscriptions;
+    }
+
+    protected function changePassword($oAccount, $sNewPassword)
+    {
+        $bResult = false;
+
+        if ($oAccount instanceof Account && $sNewPassword) {
+            $oAccount->setPassword($sNewPassword);
+            $bResult = $this->getAccountsManager()->updateAccount($oAccount);
+        } else {
+            \Aurora\System\Api::LogEvent('password-change-failed: ' . $oAccount->Login, self::GetName());
+            throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Exceptions\Errs::UserManager_AccountNewPasswordRejected);
+        }
+
+        return $bResult;
     }
 
     /***** private functions *****/
@@ -422,18 +462,10 @@ class Module extends \Aurora\System\Module\AbstractModule
                     throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Exceptions\Errs::UserManager_AccountOldPasswordNotCorrect);
                 }
 
-                if ($Password) {
-                    $oAccount->setPassword($Password);
-                    $this->getAccountsManager()->updateAccount($oAccount);
-                } else {
-                    \Aurora\System\Api::LogEvent('password-change-failed: ' . $oAccount->Login, self::GetName());
-                    throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Exceptions\Errs::UserManager_AccountNewPasswordRejected);
-                }
+                $this->changePassword($oAccount, $Password);
             }
 
-            return $oAccount ? array(
-                'EntityId' => $oAccount->Id
-            ) : false;
+            return $oAccount ? array('EntityId' => $oAccount->Id) : false;
         } else {
             throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::InvalidInputParameter);
         }
