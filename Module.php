@@ -178,12 +178,9 @@ class Module extends \Aurora\System\Module\AbstractModule
     {
         $bPasswordChanged = false;
         $bBreakSubscriptions = false;
-        $bSkipCurrentPasswordCheck = isset($aArguments['SkipCurrentPasswordCheck']) && $aArguments['SkipCurrentPasswordCheck'];
         $oAccount = $aArguments['Account'];
 
-        if ($oAccount instanceof Account
-            && ($oAccount->getPassword() === $aArguments['CurrentPassword'] || $bSkipCurrentPasswordCheck)
-        ) {
+        if ($oAccount instanceof Account && $oAccount->getPassword() === $aArguments['CurrentPassword']) {
             $bPasswordChanged = $this->changePassword($oAccount, $aArguments['NewPassword']);
             $bBreakSubscriptions = true;
         }
