@@ -192,6 +192,15 @@ class Module extends \Aurora\System\Module\AbstractModule
         return $bBreakSubscriptions;
     }
 
+    public function onAfterGetDigestHash($aArgs, &$mResult)
+    {
+        $oAccount = $this->getAccountsManager()->getAccountUsedToAuthorize($aArgs['Login']);
+        if (is_a($oAccount, $aArgs['Type'])) {
+            $mResult = \md5($aArgs['Login'] . ':' . $aArgs['Realm'] . ':' . $oAccount->GetPassword());
+            return true;
+        }
+    }
+
     protected function changePassword($oAccount, $sNewPassword)
     {
         $bResult = false;
