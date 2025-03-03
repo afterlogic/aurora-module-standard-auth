@@ -72,6 +72,7 @@ class Module extends \Aurora\System\Module\AbstractModule
         $this->subscribeEvent('Core::GetAccounts', array($this, 'onGetAccounts'));
         $this->subscribeEvent('Core::GetAccountUsedToAuthorize', array($this, 'onGetAccountUsedToAuthorize'), 200);
         $this->subscribeEvent('StandardResetPassword::ChangeAccountPassword', array($this, 'onChangeAccountPassword'));
+        $this->subscribeEvent('Dav::GetDigestHash::after', array($this, 'onAfterGetDigestHash'));
 
         $this->denyMethodCallByWebApi('CreateAccount');
         $this->denyMethodCallByWebApi('SaveAccount');
