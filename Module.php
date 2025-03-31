@@ -8,6 +8,7 @@
 namespace Aurora\Modules\StandardAuth;
 
 use Aurora\Modules\StandardAuth\Models\Account;
+use Aurora\System\Notifications;
 
 /**
  * This module provides API for authentication by login/password that relies on database.
@@ -211,7 +212,7 @@ class Module extends \Aurora\System\Module\AbstractModule
             $bResult = $this->getAccountsManager()->updateAccount($oAccount);
         } else {
             \Aurora\System\Api::LogEvent('password-change-failed: ' . $oAccount->Login, self::GetName());
-            throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Exceptions\Errs::UserManager_AccountNewPasswordRejected);
+            throw new \Aurora\System\Exceptions\ApiException(Notifications::CanNotChangePassword);
         }
 
         return $bResult;
@@ -466,7 +467,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 
                 if ($oUser->Role !== \Aurora\System\Enums\UserRole::SuperAdmin && $oAccount->getPassword() !== $CurrentPassword) {
                     \Aurora\System\Api::LogEvent('password-change-failed: ' . $oAccount->Login, self::GetName());
-                    throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Exceptions\Errs::UserManager_AccountOldPasswordNotCorrect);
+                    throw new \Aurora\System\Exceptions\ApiException(Notifications::AccountOldPasswordNotCorrect);
                 }
 
                 $this->changePassword($oAccount, $Password);
@@ -474,7 +475,7 @@ class Module extends \Aurora\System\Module\AbstractModule
 
             return $oAccount ? array('EntityId' => $oAccount->Id) : false;
         } else {
-            throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::InvalidInputParameter);
+            throw new \Aurora\System\Exceptions\ApiException(Notifications::InvalidInputParameter);
         }
 
         return false;

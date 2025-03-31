@@ -40,7 +40,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
 
                 $oAccount = Account::find($iAccountId);
             } else {
-                throw new \Aurora\System\Exceptions\BaseException(\Aurora\System\Notifications::InvalidInputParameter);
+                throw new \Aurora\System\Exceptions\ApiException(\Aurora\System\Notifications::InvalidInputParameter);
             }
         } catch (\Aurora\System\Exceptions\BaseException $oException) {
             $oAccount = false;
@@ -177,16 +177,9 @@ class Manager extends \Aurora\System\Managers\AbstractManager
         $bResult = false;
         try {
             if ($oAccount->validate()) {
-                //				if ($this->isExists($oAccount))
-                //				{
                 if (!$oAccount->save()) {
                     throw new \Aurora\System\Exceptions\ManagerException(\Aurora\Modules\Core\Enums\ErrorCodes::UserCreateFailed);
                 }
-                //				}
-                //				else
-                //				{
-                //					throw new \Aurora\System\Exceptions\ManagerException(Errs::UsersManager_UserAlreadyExists);
-                //				}
             }
 
             $bResult = true;
