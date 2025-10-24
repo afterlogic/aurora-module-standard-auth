@@ -92,6 +92,7 @@ class Manager extends \Aurora\System\Managers\AbstractManager
         try {
             $query = Account::query();
             if ($sSearchDesc !== '') {
+                $sSearchDesc = str_replace(['%', '_'], ['\%', '\_'], $sSearchDesc);
                 $query = $query->where('Login', 'LIKE', '%' . $sSearchDesc . '%');
             }
             if ($iPage > 0) {
