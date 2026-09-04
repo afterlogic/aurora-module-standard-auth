@@ -249,13 +249,16 @@ class Module extends \Aurora\System\Module\AbstractModule
         } else {
             $sPublicId = (string)$sLogin;
             $bPrevState = \Aurora\System\Api::skipCheckUserRole(true);
-            $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserByPublicId($sPublicId);
+            try {
+                $oUser = \Aurora\Modules\Core\Module::Decorator()->GetUserByPublicId($sPublicId);
 
-            if (!$oUser) {
-                $iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
-                $oUser = \Aurora\Api::getUserById($iUserId);
+                if (!$oUser) {
+                    $iUserId = \Aurora\Modules\Core\Module::Decorator()->CreateUser($iTenantId, $sPublicId);
+                    $oUser = \Aurora\Api::getUserById($iUserId);
+                }
+            } finally {
+                \Aurora\System\Api::skipCheckUserRole($bPrevState);
             }
-            \Aurora\System\Api::skipCheckUserRole($bPrevState);
         }
 
         //		$mResult = null;
